@@ -2,6 +2,10 @@ import 'package:booking_app_mobile/widgets/calendarView.dart';
 import 'package:booking_app_mobile/widgets/dateInput.dart';
 import 'package:flutter/material.dart';
 import 'package:booking_app_mobile/widgets/listView.dart';
+import 'package:booking_app_mobile/widgets/city_card.dart';
+import 'package:booking_app_mobile/models/city_model.dart';
+import 'package:booking_app_mobile/widgets/content_title.dart';
+import 'package:booking_app_mobile/constant/values.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: IndexedStack(
         index: _currentIndex,
         children: [
-          bookingScreen(context),
+          buildHomePage(),
           DateInput(restorationId: 'main',),
           //historyScreen(context),
           ListPage(key: listStateKey,),
@@ -142,6 +146,43 @@ class _MyHomePageState extends State<MyHomePage> {
         BottomNavigationBarItem(icon: Icon(Icons.access_alarm), label: 'Incoming'),
         BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'Incoming'),
       ],
+    );
+  }
+
+  Widget buildHomePage() {
+    return Scaffold(
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: 15,),
+              const Text('What you would like to find??', style: headerStyle),
+              const SizedBox(height: 10),
+              const ContentTitle(title: 'Top Rating Yards'),
+              buildCityList(),
+              const ContentTitle(title: 'Nearby Yards'),
+              buildCityList(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildCityList() {
+    return SizedBox(
+      height: 300,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        itemCount: kCitiesList.length,
+        itemBuilder: (BuildContext context, int index) {
+          return CityCard(city: kCitiesList[index]);
+        },
+      ),
     );
   }
 }
