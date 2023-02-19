@@ -40,7 +40,7 @@ class DateInputState extends State<DateInput> with RestorationMixin {
                   color: Color(int.parse("0xff0000ff")).withAlpha(20)),
               duration: Duration(milliseconds: 300),
               child: Center(
-                child: Text(DateFormat("dd/MM/yyyy").format(_selectedDate.value)),
+                child: Text(DateFormat("dd/MM/yyyy").format(selectedDate.value)),
               )),
         ),
       ),
@@ -50,7 +50,7 @@ class DateInputState extends State<DateInput> with RestorationMixin {
   @override
   String? get restorationId => widget.restorationId;
 
-  final RestorableDateTime _selectedDate =
+  final RestorableDateTime selectedDate =
       RestorableDateTime(DateTime(2021, 7, 25));
   late final RestorableRouteFuture<DateTime?> _restorableDatePickerRouteFuture =
       RestorableRouteFuture<DateTime?>(
@@ -58,7 +58,7 @@ class DateInputState extends State<DateInput> with RestorationMixin {
     onPresent: (NavigatorState navigator, Object? arguments) {
       return navigator.restorablePush(
         _datePickerRoute,
-        arguments: _selectedDate.value.millisecondsSinceEpoch,
+        arguments: selectedDate.value.millisecondsSinceEpoch,
       );
     },
   );
@@ -83,7 +83,7 @@ class DateInputState extends State<DateInput> with RestorationMixin {
 
   @override
   void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
-    registerForRestoration(_selectedDate, 'selected_date');
+    registerForRestoration(selectedDate, 'selected_date');
     registerForRestoration(
         _restorableDatePickerRouteFuture, 'date_picker_route_future');
   }
@@ -91,10 +91,10 @@ class DateInputState extends State<DateInput> with RestorationMixin {
   void _selectDate(DateTime? newSelectedDate) {
     if (newSelectedDate != null) {
       setState(() {
-        _selectedDate.value = newSelectedDate;
+        selectedDate.value = newSelectedDate;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
-              'Selected: ${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}'),
+              'Selected: ${selectedDate.value.day}/${selectedDate.value.month}/${selectedDate.value.year}'),
         ));
       });
     }

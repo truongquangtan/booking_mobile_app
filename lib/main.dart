@@ -1,5 +1,6 @@
 import 'package:booking_app_mobile/widgets/calendarView.dart';
 import 'package:booking_app_mobile/widgets/dateInput.dart';
+import 'package:booking_app_mobile/widgets/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:booking_app_mobile/widgets/listView.dart';
 import 'package:booking_app_mobile/widgets/city_card.dart';
@@ -40,6 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 1;
   int _counter = 0;
   final GlobalKey<ListPageState> listStateKey = GlobalKey<ListPageState>();
+  final GlobalKey<DateInputState> dateInputKey = GlobalKey<DateInputState>();
 
   void _incrementCounter() {
     setState(() {
@@ -51,59 +53,19 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     print(listStateKey.currentState?.incomingMatchList.length);
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: [
-          buildHomePage(),
-          DateInput(restorationId: 'main',),
-          //historyScreen(context),
-          ListPage(key: listStateKey,),
-          incomingScreen(context),
-        ]
+      body: IndexedStack(index: _currentIndex, children: [
+        HomePage(key: UniqueKey()),
+        DateInput(
+          key: dateInputKey,
+          restorationId: 'main',
         ),
-      bottomNavigationBar: buildBottomAppBar(), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-
-  Center bookingScreen(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Text(
-            'You have pushed the button this many times:',
-          ),
-          Text(
-            '$_counter',
-            style: Theme.of(context).textTheme.headline4,
-          ),
-          Text(
-            '$_currentIndex',
-            style: Theme.of(context).textTheme.headline4,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Center historyScreen(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Text(
-            'History screen',
-          ),
-          Text(
-            '$_counter',
-            style: Theme.of(context).textTheme.headline4,
-          ),
-          Text(
-            '$_currentIndex',
-            style: Theme.of(context).textTheme.headline4,
-          ),
-        ],
-      ),
+        ListPage(
+          key: listStateKey,
+        ),
+        incomingScreen(context),
+      ]),
+      bottomNavigationBar:
+          buildBottomAppBar(), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
@@ -123,9 +85,16 @@ class _MyHomePageState extends State<MyHomePage> {
             '$_currentIndex',
             style: Theme.of(context).textTheme.headline4,
           ),
+          ElevatedButton(onPressed: () => showMessage(), child: Text("Click me"))
         ],
       ),
     );
+  }
+
+  void showMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Selected: ${dateInputKey.currentState?.selectedDate.value.day}'),
+    ));
   }
 
   Widget buildBottomAppBar() {
@@ -143,46 +112,10 @@ class _MyHomePageState extends State<MyHomePage> {
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Book'),
         BottomNavigationBarItem(icon: Icon(Icons.date_range), label: 'History'),
-        BottomNavigationBarItem(icon: Icon(Icons.access_alarm), label: 'Incoming'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.access_alarm), label: 'Incoming'),
         BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'Incoming'),
       ],
-    );
-  }
-
-  Widget buildHomePage() {
-    return Scaffold(
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: 15,),
-              const Text('What you would like to find??', style: headerStyle),
-              const SizedBox(height: 10),
-              const ContentTitle(title: 'Top Rating Yards'),
-              buildCityList(),
-              const ContentTitle(title: 'Nearby Yards'),
-              buildCityList(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildCityList() {
-    return SizedBox(
-      height: 300,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        itemCount: kCitiesList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return CityCard(city: kCitiesList[index]);
-        },
-      ),
     );
   }
 }
