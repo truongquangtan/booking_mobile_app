@@ -1,19 +1,19 @@
+import 'package:booking_app_mobile/common_components/star_rating_bar.dart';
+import 'package:booking_app_mobile/models/yard_simple.dart';
 import 'package:flutter/material.dart';
 import 'package:booking_app_mobile/constant/values.dart';
-import 'package:booking_app_mobile/models/city_model.dart';
 import 'package:booking_app_mobile/widgets/city_info.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class CityCard extends StatefulWidget {
-  final CityModel city;
+class YardCard extends StatefulWidget {
+  final YardSimple yard;
 
-  const CityCard({Key? key, required this.city}) : super(key: key);
+  const YardCard({Key? key, required this.yard}) : super(key: key);
 
   @override
-  _CityCardState createState() => _CityCardState();
+  _YardSimpleCardState createState() => _YardSimpleCardState();
 }
 
-class _CityCardState extends State<CityCard>
+class _YardSimpleCardState extends State<YardCard>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
 
@@ -89,7 +89,7 @@ class _CityCardState extends State<CityCard>
             children: <Widget>[
               buildImageCard(cardWidth),
               SizedBox(height: 16,),
-              buildRating(),
+              StarRatingBar(rating: widget.yard.score/20, size: 24),
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -100,7 +100,7 @@ class _CityCardState extends State<CityCard>
                   ),
                   Flexible(
                     child: Text(
-                      '${widget.city.startTime} - ${widget.city.endTime}',
+                      '${widget.yard.openAt} - ${widget.yard.closeAt}',
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ),
@@ -117,7 +117,7 @@ class _CityCardState extends State<CityCard>
                   ),
                   Flexible(
                     child: Text(
-                      widget.city.description,
+                      widget.yard.address,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ),
@@ -144,37 +144,18 @@ class _CityCardState extends State<CityCard>
             children: <Widget>[
               Positioned.fill(
                 child: Hero(
-                  tag: widget.city.image,
+                  tag: widget.yard.images.first,
                   child: Image.network(
-                    widget.city.image,
+                    widget.yard.images.first,
                     fit: BoxFit.cover,
                     loadingBuilder: onImageLoading,
                   ),
                 ),
               ),
-              CityInfo(city: widget.city),
+              CityInfo(yard: widget.yard),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget buildRating() {
-    return RatingBar(
-      initialRating: widget.city.rating,
-      allowHalfRating: true,
-      direction: Axis.horizontal,
-      itemCount: 5,
-      itemSize: 25,
-      unratedColor: Colors.black,
-      itemPadding: const EdgeInsets.only(right: 4.0),
-      ignoreGestures: true,
-      onRatingUpdate: (rating) {},
-      ratingWidget: RatingWidget(
-        full: const Icon(Icons.star, color: Colors.orangeAccent),
-        half: const Icon(Icons.star, color: Colors.orangeAccent),
-        empty: const Icon(Icons.star_border, color: Colors.orangeAccent),
       ),
     );
   }

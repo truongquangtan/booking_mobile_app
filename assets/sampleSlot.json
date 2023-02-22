@@ -1,0 +1,9 @@
+{
+    "id": 1129,
+    "refSubYard": "d21d1788-87d4-4bf5-9ef3-c6881693e557",
+    "price": 60000,
+    "startTime": "06:00",
+    "endTime": "07:00",
+    "isActive": true,
+    "isBooked": false
+}

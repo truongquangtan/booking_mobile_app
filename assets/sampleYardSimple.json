@@ -1,0 +1,146 @@
+[
+    {
+        "id": "62ab23a5-aae4-4f83-9f4d-8e8c324e1897",
+        "name": "Sân Tinh Võ",
+        "address": "756 Đường Nguyễn Trãi, Quận 5, TP.Hồ Chí Minh",
+        "districtName": "Quận 5",
+        "province": "Thành phố Hồ Chí Minh",
+        "openAt": "06:00",
+        "closeAt": "23:00",
+        "reference": 1009,
+        "isActive": false,
+        "score": 100,
+        "ownerId": "2274575e-8991-44a1-b85f-685baf27a72b",
+        "images": [
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/e425b549-3f8e-4d4a-928a-c1a136c5e358?alt\u003dmedia",
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/1dfaa749-1317-4824-a668-18f5e8aca605?alt\u003dmedia",
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/2acc32fd-e0af-465f-bbc8-551b481e670a?alt\u003dmedia"
+        ]
+    },
+    {
+        "id": "87e4a35e-5f39-4d0c-b9d5-3a544fb550ca",
+        "name": "Sân Quận 7",
+        "address": "702 Nguyễn Văn Linh, Tân Hưng, Quận 7, Thành phố Hồ Chí Minh",
+        "districtName": "Quận 7",
+        "province": "Thành phố Hồ Chí Minh",
+        "openAt": "05:00",
+        "closeAt": "22:00",
+        "reference": 1007,
+        "isActive": false,
+        "score": 85,
+        "ownerId": "2274575e-8991-44a1-b85f-685baf27a72b",
+        "images": [
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/7f488ae9-c82b-4bec-a036-1ee814638b48.jpg?alt\u003dmedia",
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/761eca26-ba5b-4103-8e87-c2327d103892.jpg?alt\u003dmedia",
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/a3892ac2-b3c9-481a-a912-8f10a62cd243.jpg?alt\u003dmedia\u0026token\u003d4059c770-38be-427f-8d69-332d85bcc7e6"
+        ]
+    },
+    {
+        "id": "3b39a7fb-dd58-4259-98f7-d7cdc82a30f9",
+        "name": "Sân Bóng Rổ Hoa Lư",
+        "address": "2 Đinh Tiên Hoàng, Đài Kao, Quận 1, TP.Hồ Chí Minh",
+        "districtName": "Quận 1",
+        "province": "Thành phố Hồ Chí Minh",
+        "openAt": "06:00",
+        "closeAt": "22:00",
+        "reference": 1008,
+        "isActive": false,
+        "score": 85,
+        "ownerId": "2274575e-8991-44a1-b85f-685baf27a72b",
+        "images": [
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/84ad02b9-2052-445a-bb5f-cba0dea885a9?alt\u003dmedia",
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/4f258f4d-ea7c-46b5-a79e-14b91903d3ed?alt\u003dmedia",
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/53a254ec-c7fa-4ed5-b2f2-99ca32c3a0db?alt\u003dmedia"
+        ]
+    },
+    {
+        "id": "42bbac1a-112a-4a1a-b071-ba0bffad71cf",
+        "name": "Sân Quận 8",
+        "address": "8 Đường Quang Đông, Quận 8, TP.Hồ Chí Minh",
+        "districtName": "Quận 8",
+        "province": "Thành phố Hồ Chí Minh",
+        "openAt": "06:00",
+        "closeAt": "23:00",
+        "reference": 1003,
+        "isActive": false,
+        "score": 80,
+        "ownerId": "2274575e-8991-44a1-b85f-685baf27a72b",
+        "images": [
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/4402fdc8-4f9d-4841-a0f3-ba37af05cbf7?alt\u003dmedia",
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/3592fb3e-fd32-4342-b021-555880834336?alt\u003dmedia",
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/9c2ee165-d32c-4ba3-b191-d02e89bcd9a3?alt\u003dmedia"
+        ]
+    },
+    {
+        "id": "61dbf913-9b02-4e47-bbc0-73bad1b5238b",
+        "name": "Sân Bóng Rổ Quận 11",
+        "address": "8 Đường Quang Đông, Quận 8, Thành phố Hồ Chí Minh",
+        "districtName": "Quận 11",
+        "province": "Thành phố Hồ Chí Minh",
+        "openAt": "07:00",
+        "closeAt": "20:00",
+        "reference": 1006,
+        "isActive": false,
+        "score": 80,
+        "ownerId": "2274575e-8991-44a1-b85f-685baf27a72b",
+        "images": [
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/ba3b477d-22f5-4a59-aa70-e54a9900d4c8?alt\u003dmedia",
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/73caa268-852f-4940-9972-cafd35879212?alt\u003dmedia",
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/5c811291-c66e-450b-9c3c-f34f5eb2c373?alt\u003dmedia"
+        ]
+    },
+    {
+        "id": "8474dea7-64f4-4ab6-9c6a-89e3af549c4b",
+        "name": "Sân Phan Đình Phùng",
+        "address": "8 Võ Văn Tần, Quận 3, TP.Hồ Chí Minh",
+        "districtName": "Quận 3",
+        "province": "Thành phố Hồ Chí Minh",
+        "openAt": "05:00",
+        "closeAt": "22:00",
+        "reference": 1010,
+        "isActive": false,
+        "score": 65,
+        "ownerId": "2274575e-8991-44a1-b85f-685baf27a72b",
+        "images": [
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/b368a5ff-ce21-49eb-bbb8-4cf918ca8ff3?alt\u003dmedia",
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/f91dfc19-7b56-4454-bacf-27c0543e426e?alt\u003dmedia",
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/77d5d692-f2c2-4506-893d-dc9f1699153f?alt\u003dmedia"
+        ]
+    },
+    {
+        "id": "ef782200-1289-4ff7-a91d-9e66edab015f",
+        "name": "Sân bóng rổ Thanh Xuân",
+        "address": "166 Khuất Duy Tiến, Quận Thanh Xuân, Hà Nội",
+        "districtName": "Quận Thanh Xuân",
+        "province": "Hà Nội",
+        "openAt": "07:00",
+        "closeAt": "22:00",
+        "reference": 1001,
+        "isActive": false,
+        "score": 0,
+        "ownerId": "38c1ab75-6e7a-4899-8879-41b8a52eb0c9",
+        "images": [
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/a256a55a-20fa-49c0-a095-d690dbb01ec7?alt\u003dmedia",
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/3235d742-ad38-4443-b6ef-eb3ef4acceef?alt\u003dmedia",
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/dab11c4c-485b-4a0a-9fa7-1a9d7cf10902?alt\u003dmedia"
+        ]
+    },
+    {
+        "id": "7db1754b-23f0-41f6-9e18-08bc904c1881",
+        "name": "Sân HUTECH",
+        "address": "475A Điện Biên Phủ, Phường 25, Quận Bình Thạnh, Thành phố Hồ Chí Minh",
+        "districtName": "Quận Bình Thạnh",
+        "province": "Thành phố Hồ Chí Minh",
+        "openAt": "07:00",
+        "closeAt": "22:00",
+        "reference": 1004,
+        "isActive": false,
+        "score": 0,
+        "ownerId": "2274575e-8991-44a1-b85f-685baf27a72b",
+        "images": [
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/a028fde6-aa86-49b7-a912-0418e35435d7?alt\u003dmedia",
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/1a81c14e-3973-4fbb-b2a2-d95e632db38f?alt\u003dmedia",
+            "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/6a1c3841-2df3-419a-90fc-2c43eb626895?alt\u003dmedia"
+        ]
+    }
+]

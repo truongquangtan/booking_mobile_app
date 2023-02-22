@@ -1,15 +1,29 @@
-import 'package:booking_app_mobile/widgets/calendarView.dart';
-import 'package:booking_app_mobile/widgets/dateInput.dart';
-import 'package:booking_app_mobile/widgets/home_view.dart';
+import 'dart:convert';
+
+import 'package:booking_app_mobile/locator.dart';
+import 'package:booking_app_mobile/models/slot.dart';
+import 'package:booking_app_mobile/common_components/date_input.dart';
+import 'package:booking_app_mobile/widgets/pages/home_view.dart';
+import 'package:booking_app_mobile/widgets/pages/yard_view.dart';
 import 'package:flutter/material.dart';
-import 'package:booking_app_mobile/widgets/listView.dart';
-import 'package:booking_app_mobile/widgets/city_card.dart';
-import 'package:booking_app_mobile/models/city_model.dart';
-import 'package:booking_app_mobile/widgets/content_title.dart';
-import 'package:booking_app_mobile/constant/values.dart';
+import 'package:booking_app_mobile/widgets/pages/list_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:booking_app_mobile/bloc_providers.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  setupLocator();
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
+}
+
+Future<void> readJson() async {
+  final String response =
+      await rootBundle.loadString('assets/sampleSlot.json');
+  
+  final data = await json.decode(response);
+  Slot slot = Slot.fromJson(data);
+  print(slot.price);
 }
 
 class MyApp extends StatelessWidget {
@@ -18,12 +32,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiBlocProvider(
+      providers: BlocProviders.getProviders,
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const MyHomePage(title: 'Flutter Demo Home Page'),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -48,21 +65,21 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
   }
+  @override
+  void initState() {
+    super.initState();
 
+    //readJson();
+  }
   @override
   Widget build(BuildContext context) {
-    print(listStateKey.currentState?.incomingMatchList.length);
     return Scaffold(
       body: IndexedStack(index: _currentIndex, children: [
         HomePage(key: UniqueKey()),
-        DateInput(
-          key: dateInputKey,
-          restorationId: 'main',
-        ),
+        YardPage('87e4a35e-5f39-4d0c-b9d5-3a544fb550ca'),
         ListPage(
           key: listStateKey,
         ),
-        incomingScreen(context),
       ]),
       bottomNavigationBar:
           buildBottomAppBar(), // This trailing comma makes auto-formatting nicer for build methods.
@@ -85,7 +102,8 @@ class _MyHomePageState extends State<MyHomePage> {
             '$_currentIndex',
             style: Theme.of(context).textTheme.headline4,
           ),
-          ElevatedButton(onPressed: () => showMessage(), child: Text("Click me"))
+          ElevatedButton(
+              onPressed: () => showMessage(), child: Text("Click me"))
         ],
       ),
     );
@@ -93,7 +111,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void showMessage() {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Selected: ${dateInputKey.currentState?.selectedDate.value.day}'),
+      content: Text(
+          'Selected: ${dateInputKey.currentState?.selectedDate.value.day}'),
     ));
   }
 
@@ -103,18 +122,16 @@ class _MyHomePageState extends State<MyHomePage> {
       onTap: (index) {
         setState(() {
           _currentIndex = index;
-          print(listStateKey.currentState?.incomingMatchList.length);
         });
       },
       backgroundColor: Color.fromARGB(226, 255, 255, 255),
       unselectedItemColor: Color.fromARGB(223, 22, 21, 21),
       selectedItemColor: Color.fromARGB(223, 41, 47, 242),
       items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Book'),
-        BottomNavigationBarItem(icon: Icon(Icons.date_range), label: 'History'),
+        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+        BottomNavigationBarItem(icon: Icon(Icons.date_range), label: 'Book'),
         BottomNavigationBarItem(
             icon: Icon(Icons.access_alarm), label: 'Incoming'),
-        BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'Incoming'),
       ],
     );
   }

@@ -1,0 +1,44 @@
+{
+    "id": "87e4a35e-5f39-4d0c-b9d5-3a544fb550ca",
+    "name": "Sân Quận 7",
+    "address": "702 Nguyễn Văn Linh, Tân Hưng, Quận 7, Thành phố Hồ Chí Minh",
+    "districtName": "Quận 7",
+    "openAt": "05:00",
+    "closeAt": "22:00",
+    "score": 85,
+    "ownerId": "2274575e-8991-44a1-b85f-685baf27a72b",
+    "images": [
+        "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/7f488ae9-c82b-4bec-a036-1ee814638b48.jpg?alt\u003dmedia",
+        "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/761eca26-ba5b-4103-8e87-c2327d103892.jpg?alt\u003dmedia",
+        "https://firebasestorage.googleapis.com/v0/b/fu-swp391.appspot.com/o/a3892ac2-b3c9-481a-a912-8f10a62cd243.jpg?alt\u003dmedia\u0026token\u003d4059c770-38be-427f-8d69-332d85bcc7e6"
+    ],
+    "subYards": [
+        {
+            "id": "d21d1788-87d4-4bf5-9ef3-c6881693e557",
+            "name": "Sân 3",
+            "parentYard": "87e4a35e-5f39-4d0c-b9d5-3a544fb550ca",
+            "typeYard": "3 VS 3",
+            "createAt": "Jul 31, 2022, 1:37:16 AM",
+            "reference": 1008,
+            "isActive": true
+        },
+        {
+            "id": "e1954053-1123-459d-809f-c50a86de626d",
+            "name": "Sân 2",
+            "parentYard": "87e4a35e-5f39-4d0c-b9d5-3a544fb550ca",
+            "typeYard": "3 VS 3",
+            "createAt": "Jul 31, 2022, 1:37:16 AM",
+            "reference": 1009,
+            "isActive": true
+        },
+        {
+            "id": "81281461-1816-4b13-964d-abdfdad52e37",
+            "name": "Sân 1",
+            "parentYard": "87e4a35e-5f39-4d0c-b9d5-3a544fb550ca",
+            "typeYard": "3 VS 3",
+            "createAt": "Jul 31, 2022, 1:37:16 AM",
+            "reference": 1010,
+            "isActive": true
+        }
+    ]
+}

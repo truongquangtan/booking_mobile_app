@@ -16,6 +16,7 @@ class ListPageState extends State<ListPage> {
   Future<void> readJson() async {
     final String response =
         await rootBundle.loadString('assets/sampleIncomingMatch.json');
+
     final data = await json.decode(response);
 
     setState(() {
@@ -26,7 +27,6 @@ class ListPageState extends State<ListPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     readJson();
