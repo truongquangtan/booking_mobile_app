@@ -4,6 +4,8 @@ import 'package:booking_app_mobile/locator.dart';
 import 'package:booking_app_mobile/models/slot.dart';
 import 'package:booking_app_mobile/common_components/date_input.dart';
 import 'package:booking_app_mobile/widgets/pages/home_view.dart';
+import 'package:booking_app_mobile/widgets/pages/login.dart';
+import 'package:booking_app_mobile/widgets/pages/sign_up.dart';
 import 'package:booking_app_mobile/widgets/pages/yard_view.dart';
 import 'package:flutter/material.dart';
 import 'package:booking_app_mobile/widgets/pages/list_view.dart';
@@ -80,6 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ListPage(
           key: listStateKey,
         ),
+        LoginScreen(),
+        SignUpScreen()
       ]),
       bottomNavigationBar:
           buildBottomAppBar(), // This trailing comma makes auto-formatting nicer for build methods.
@@ -132,6 +136,8 @@ class _MyHomePageState extends State<MyHomePage> {
         BottomNavigationBarItem(icon: Icon(Icons.date_range), label: 'Book'),
         BottomNavigationBarItem(
             icon: Icon(Icons.access_alarm), label: 'Incoming'),
+        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Login'),
+        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Signup'),
       ],
     );
   }
