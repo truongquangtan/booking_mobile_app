@@ -1,5 +1,6 @@
 import 'package:booking_app_mobile/common_components/star_rating_bar.dart';
 import 'package:booking_app_mobile/models/yard_simple.dart';
+import 'package:booking_app_mobile/widgets/pages/yard_view.dart';
 import 'package:flutter/material.dart';
 import 'package:booking_app_mobile/constant/values.dart';
 import 'package:booking_app_mobile/widgets/yard_info.dart';
@@ -31,12 +32,12 @@ class _YardSimpleCardState extends State<YardCard>
     super.dispose();
   }
 
-  void viewCity() {
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (context) => DetailPage(city: widget.city),
-    //   ),
-    // );
+  void viewYard() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => YardPage(widget.yard.id),
+      ),
+    );
   }
 
   Widget onImageLoading(context, Widget child, ImageChunkEvent? progress) {
@@ -62,7 +63,7 @@ class _YardSimpleCardState extends State<YardCard>
         margin: const EdgeInsets.only(right: 8),
         width: cardWidth,
         child: InkWell(
-          onTap: viewCity,
+          onTap: viewYard,
           customBorder: roundedRect16,
           child: Stack(
             children: <Widget>[

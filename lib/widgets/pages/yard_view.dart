@@ -18,8 +18,7 @@ class YardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<YardCubit>();
-    //final cubit = BlocProvider.of<PlaceDetailCubit>(context);
+    final cubit = BlocProvider.of<YardCubit>(context);
     cubit.getYard(yardId);
 
     return Scaffold(

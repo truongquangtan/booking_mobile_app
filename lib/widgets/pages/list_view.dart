@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'package:booking_app_mobile/common_components/loading.dart';
+import 'package:booking_app_mobile/cubit/incoming_matched_cubit.dart';
 import 'package:booking_app_mobile/models/incomingMatch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ListPage extends StatefulWidget {
   const ListPage({Key? key}) : super(key: key);
@@ -11,30 +14,32 @@ class ListPage extends StatefulWidget {
 }
 
 class ListPageState extends State<ListPage> {
-  List<dynamic> incomingMatchList = [];
-
-  Future<void> readJson() async {
-    final String response =
-        await rootBundle.loadString('assets/sampleIncomingMatch.json');
-
-    final data = await json.decode(response);
-
-    setState(() {
-      incomingMatchList =
-          data.map((data) => IncomingMatch.fromJson(data)).toList();
-    });
-  }
+  List<IncomingMatch> incomingMatchList = [];
 
   @override
   void initState() {
     super.initState();
-
-    readJson();
   }
 
   @override
   Widget build(BuildContext context) {
-    return buildListView();
+    final cubit = BlocProvider.of<IncomingMatchCubit>(context);
+    cubit.getIncomingMatches(null);
+
+    return BlocBuilder<IncomingMatchCubit, IncomingMatchState>(
+      builder: (context, state) {
+
+        if (state is LoadingIncomingMatchesState) {
+          return Loading();
+        }
+
+        if (state is LoadedIncomingMatchesState) {
+          incomingMatchList = state.incomingMatches;
+        }
+
+        return buildListView();
+      }
+    );
   }
 
   Scaffold buildListView() {

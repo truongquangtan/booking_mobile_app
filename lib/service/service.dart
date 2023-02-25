@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:booking_app_mobile/models/district.dart';
+import 'package:booking_app_mobile/models/incomingMatch.dart';
 import 'package:booking_app_mobile/models/province.dart';
 import 'package:booking_app_mobile/models/yard_model.dart';
 import 'package:booking_app_mobile/models/yard_simple.dart';
@@ -54,6 +55,26 @@ class Service {
     if(response.statusCode == 200){
       final data = await json.decode(response.body);
       return data['yards'].map((data) => YardSimple.fromJson(data)).toList().cast<YardSimple>();
+    }
+    return [];
+  }
+
+  Future<List<IncomingMatch>> getIncomingMatch(String authToken) async {
+    const uri = 'https://d2bawuzpgqlp7v.cloudfront.net/api/v1/me/incoming-matches';
+    final response = await http.post(
+      Uri.parse(uri),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'authorization': authToken,
+      },
+      body: jsonEncode(<String, dynamic>{
+      'itemsPerPage': 1000,
+      'page': 1,
+      }),
+    );
+    if(response.statusCode == 200){
+      final data = await json.decode(response.body);
+      return data['data'].map((data) => IncomingMatch.fromJson(data)).toList().cast<IncomingMatch>();
     }
     return [];
   }
