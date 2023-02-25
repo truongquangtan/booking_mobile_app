@@ -4,6 +4,8 @@ import 'package:booking_app_mobile/locator.dart';
 import 'package:booking_app_mobile/models/slot.dart';
 import 'package:booking_app_mobile/common_components/date_input.dart';
 import 'package:booking_app_mobile/widgets/pages/home_view.dart';
+import 'package:booking_app_mobile/widgets/pages/login.dart';
+import 'package:booking_app_mobile/widgets/pages/sign_up.dart';
 import 'package:booking_app_mobile/widgets/pages/yard_view.dart';
 import 'package:flutter/material.dart';
 import 'package:booking_app_mobile/widgets/pages/list_view.dart';
@@ -29,7 +31,6 @@ Future<void> readJson() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -39,7 +40,12 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        initialRoute: LoginScreen.routeName, // Set the initial route
+        routes: {
+          LoginScreen.routeName: (context) => LoginScreen(),
+          SignUpScreen.routeName: (context) => SignUpScreen(),
+          MyHomePage.routeName: (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
+        },
       ),
     );
   }
@@ -47,6 +53,8 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
+
+  static const String routeName = "/home";
 
   final String title;
 
