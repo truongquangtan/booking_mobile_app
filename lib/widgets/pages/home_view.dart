@@ -1,11 +1,15 @@
 import 'dart:convert';
 
+import 'package:booking_app_mobile/bloc_providers.dart';
+import 'package:booking_app_mobile/common_components/loading.dart';
 import 'package:booking_app_mobile/constant/values.dart';
+import 'package:booking_app_mobile/cubit/yard_list_cubit.dart';
 import 'package:booking_app_mobile/models/yard_simple.dart';
-import 'package:booking_app_mobile/widgets/city_card.dart';
+import 'package:booking_app_mobile/widgets/yard_card.dart';
 import 'package:booking_app_mobile/widgets/district_province_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../content_title.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,23 +20,23 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  List<dynamic> yards = [];
+  List<YardSimple> yards = [];
 
   @override
   void initState(){
     super.initState();
-    readJson();
+    //readJson();
   }
 
-  Future<void> readJson() async {
-    final String response =
-        await rootBundle.loadString('assets/sampleYardSimple.json');
+  // Future<void> readJson() async {
+  //   final String response =
+  //       await rootBundle.loadString('assets/sampleYardSimple.json');
     
-    final data = await json.decode(response);
-    setState(() {
-      yards = data.map((dataMap) => YardSimple.fromJson(dataMap)).toList();
-    });
-  }
+  //   final data = await json.decode(response);
+  //   setState(() {
+  //     yards = data.map((dataMap) => YardSimple.fromJson(dataMap)).toList();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -73,20 +77,34 @@ class HomePageState extends State<HomePage> {
 
 
   Widget buildYardList() {
-    return Column(
-      children: [
-        SizedBox(
-          height: 350,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            itemCount: yards.length,
-            itemBuilder: (BuildContext context, int index) {
-              return YardCard(yard: yards[index]);
-            },
-          ),
-        ),
-      ],
+    final yardListCubit = BlocProvider.of<YardListCubit>(context);
+    yardListCubit.getYardList(null, null);
+
+    return BlocBuilder<YardListCubit, YardListState>(
+      builder: (context, state){
+        if(state is LoadingYardListState) {
+          return Loading();
+        }
+        if(state is LoadedYardListState) {
+          yards = state.yards;
+        }
+
+        return Column(
+          children: [
+            SizedBox(
+              height: 350,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+                itemCount: yards.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return YardCard(yard: yards[index]);
+                },
+              ),
+            ),
+          ],
+        );
+      }
     );
   }
 }

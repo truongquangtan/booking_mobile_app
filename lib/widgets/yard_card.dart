@@ -2,7 +2,7 @@ import 'package:booking_app_mobile/common_components/star_rating_bar.dart';
 import 'package:booking_app_mobile/models/yard_simple.dart';
 import 'package:flutter/material.dart';
 import 'package:booking_app_mobile/constant/values.dart';
-import 'package:booking_app_mobile/widgets/city_info.dart';
+import 'package:booking_app_mobile/widgets/yard_info.dart';
 
 class YardCard extends StatefulWidget {
   final YardSimple yard;
@@ -152,7 +152,7 @@ class _YardSimpleCardState extends State<YardCard>
                   ),
                 ),
               ),
-              CityInfo(yard: widget.yard),
+              YardInfo(yard: widget.yard),
             ],
           ),
         ),

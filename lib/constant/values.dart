@@ -16,3 +16,7 @@ final roundedRect16 = RoundedRectangleBorder(
 final roundedRect12 = RoundedRectangleBorder(
   borderRadius: BorderRadiusDirectional.circular(12),
 );
+
+// Dropdown type
+final String DISTRICT = 'DISTRICT';
+final String PROVINCE = 'PROVINCE';

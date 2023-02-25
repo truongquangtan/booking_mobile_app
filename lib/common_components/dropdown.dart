@@ -1,27 +1,34 @@
+import 'package:booking_app_mobile/constant/values.dart';
+import 'package:booking_app_mobile/cubit/districts_provinces_cubit.dart';
 import 'package:booking_app_mobile/models/dropdown_option.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
 
 class MyDropdownButton extends StatefulWidget {
+  String? forSpecificType;
   final List<DropDownOption> options;
-  const MyDropdownButton({super.key, required this.options});
+  MyDropdownButton({super.key, required this.options, this.forSpecificType});
 
   @override
   State<MyDropdownButton> createState() => _MyDropdownButtonState();
 }
 
 class _MyDropdownButtonState extends State<MyDropdownButton> {
-  late String dropdownValue;
+  late String? dropdownValue;
 
   @override
   void initState(){
     super.initState();
-    dropdownValue = widget.options.first.value;
+    dropdownValue = null;
   }
 
   @override
   Widget build(BuildContext context) {
+    if(widget.options.where((element) => element.value == dropdownValue).isEmpty) {
+      dropdownValue = null;
+    }
     return DropdownButton<String>(
       value: dropdownValue,
       icon: null,
@@ -30,9 +37,22 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
       isDense: true,
       onChanged: (String? value) {
         setState(() {
-          dropdownValue = value!;
+          // Emit state change event
+          if(widget.forSpecificType == PROVINCE) {
+            final selectionCubit = BlocProvider.of<DistrictAndProvinceCubit>(context);
+            selectionCubit.selectProvince(int.parse(value!));
+          }
+          
+          // Emit state change event
+          if(widget.forSpecificType == DISTRICT) {
+            final selectionCubit = BlocProvider.of<DistrictAndProvinceCubit>(context);
+            selectionCubit.selectDistrict(int.parse(value!));
+          }
+
+          dropdownValue = value;
         });
       },
+      onTap: null,
       items: widget.options.map<DropdownMenuItem<String>>((DropDownOption option) {
         return DropdownMenuItem<String>(
           value: option.value,
