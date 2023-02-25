@@ -31,7 +31,6 @@ Future<void> readJson() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -41,7 +40,12 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        initialRoute: LoginScreen.routeName, // Set the initial route
+        routes: {
+          LoginScreen.routeName: (context) => LoginScreen(),
+          SignUpScreen.routeName: (context) => SignUpScreen(),
+          MyHomePage.routeName: (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
+        },
       ),
     );
   }
@@ -49,6 +53,8 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
+
+  static const String routeName = "/home";
 
   final String title;
 
@@ -82,8 +88,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ListPage(
           key: listStateKey,
         ),
-        LoginScreen(),
-        SignUpScreen()
       ]),
       bottomNavigationBar:
           buildBottomAppBar(), // This trailing comma makes auto-formatting nicer for build methods.
@@ -136,8 +140,6 @@ class _MyHomePageState extends State<MyHomePage> {
         BottomNavigationBarItem(icon: Icon(Icons.date_range), label: 'Book'),
         BottomNavigationBarItem(
             icon: Icon(Icons.access_alarm), label: 'Incoming'),
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Login'),
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Signup'),
       ],
     );
   }

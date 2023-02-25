@@ -1,11 +1,17 @@
 import 'package:booking_app_mobile/common_components/logo_icon.dart';
+import 'package:booking_app_mobile/widgets/pages/home_view.dart';
+import 'package:booking_app_mobile/widgets/pages/login.dart';
+import 'package:flutter/gestures.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 
 import '../../common_components/login_form.dart';
 
 class SignUpScreen extends StatelessWidget {
+  static const routeName = '/signup';
+
   void handleSignupFormSubmit(String email, String password) {
-    return;
+    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
   }
 
   @override
@@ -48,7 +54,6 @@ class SignUpScreen extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(),
           Flex(
             mainAxisAlignment: MainAxisAlignment.center,
             direction: Axis.vertical,
@@ -105,6 +110,7 @@ class SignUpScreen extends StatelessWidget {
                     child: SizedBox(
                       width: size.width * 0.9,
                       child: LoginForm(
+                        buttonText: "Sign up",
                         onSubmit: (email, password) {
                           handleSignupFormSubmit(email, password);
                         },
@@ -117,13 +123,26 @@ class SignUpScreen extends StatelessWidget {
                 padding: EdgeInsets.only(top: 20, bottom: 10),
                 child: Text.rich(
                   TextSpan(
+                    text: "If you have account, ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 12,
+                        color: Colors.white),
                     children: <TextSpan>[
                       TextSpan(
-                          text: "If you have account, sign in here",
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 12,
-                              color: Colors.white)),
+                        text: 'sign in here',
+                        style: TextStyle(
+                          color: Color(0xFFFF7A00),
+                          fontSize: 12.0,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),
+                            );
+                          },
+                      ),
                     ],
                   ),
                 ),
@@ -142,8 +161,7 @@ class SignUpScreen extends StatelessWidget {
                       iconColor: Colors.blue,
                     ),
                     SocialMediaCard(
-                      icon: Icons.snowboarding,
-                      iconColor: Colors.orange,
+                      icon: FontAwesomeIcons.google,
                     )
                   ],
                 ),

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class SocialMediaCard extends StatelessWidget {
   final IconData icon;
-  final Color iconColor;
+  final Color? iconColor;
   final Color borderColor;
   final Color backgroundColor;
 
   const SocialMediaCard({
     Key? key,
     required this.icon,
-    required this.iconColor,
+    this.iconColor,
     this.borderColor = Colors.grey,
     this.backgroundColor = Colors.white,
   }) : super(key: key);

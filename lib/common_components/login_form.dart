@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class LoginForm extends StatefulWidget {
   final void Function(String, String) onSubmit;
-
-  const LoginForm({super.key, required this.onSubmit});
+  final String buttonText;
+  const LoginForm({super.key, required this.buttonText, required this.onSubmit});
 
   @override
   _LoginFormState createState() => _LoginFormState();
@@ -103,7 +103,9 @@ class _LoginFormState extends State<LoginForm> {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                widget.onSubmit(this._email, this._password);
+              },
               style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -118,7 +120,7 @@ class _LoginFormState extends State<LoginForm> {
                   return Colors.orange;
                 }),
               ),
-              child: Text('Sign In'),
+              child: Text(widget.buttonText),
             ),
           )
         ],

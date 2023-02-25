@@ -1,14 +1,18 @@
+import 'package:booking_app_mobile/main.dart';
+import 'package:booking_app_mobile/widgets/pages/home_view.dart';
+import 'package:booking_app_mobile/widgets/pages/sign_up.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../common_components/login_form.dart';
 
 class LoginScreen extends StatelessWidget {
-  void handleLoginFormSubmit(String email, String password) {
-    return;
-  }
-
+  static const routeName = '/login';
   @override
   Widget build(BuildContext context) {
+    void handleLoginFormSubmit(String email, String password) {
+      Navigator.pushReplacementNamed(context, MyHomePage.routeName);
+    }
     String email = 'example@email.com';
     String password = 'password123';
     Size size = MediaQuery.of(context).size;
@@ -104,6 +108,7 @@ class LoginScreen extends StatelessWidget {
                     child: SizedBox(
                       width: size.width * 0.9,
                       child: LoginForm(
+                        buttonText: "Sign in",
                         onSubmit: (email, password) {
                           handleLoginFormSubmit(email, password);
                         },
@@ -116,13 +121,26 @@ class LoginScreen extends StatelessWidget {
                 padding: EdgeInsets.only(top: 20),
                 child: Text.rich(
                   TextSpan(
+                    text: "Didn't have any account, ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        color: Colors.white),
                     children: <TextSpan>[
                       TextSpan(
-                          text: "Didn't have any account, sign up here",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                              color: Colors.white)),
+                        text: 'sign up here',
+                        style: TextStyle(
+                          color: Color(0xFFFF7A00),
+                          fontSize: 12.0,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => SignUpScreen()),
+                            );
+                          },
+                      ),
                     ],
                   ),
                 ),
