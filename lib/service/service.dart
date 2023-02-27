@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'package:booking_app_mobile/models/booking_request.dart';
+import 'package:booking_app_mobile/models/booking_response.dart';
 import 'package:booking_app_mobile/models/district.dart';
 import 'package:booking_app_mobile/models/incomingMatch.dart';
 import 'package:booking_app_mobile/models/province.dart';
+import 'package:booking_app_mobile/models/slot.dart';
 import 'package:booking_app_mobile/models/yard_model.dart';
 import 'package:booking_app_mobile/models/yard_simple.dart';
 import 'package:http/http.dart' as http;
@@ -17,6 +20,24 @@ class Service {
       return Yard.fromJson(responseBody['data']);
     }
     return null;
+  }
+
+  Future<List<Slot>> getSlots(String subYardId, String date) async {
+    final uri = 'https://d2bawuzpgqlp7v.cloudfront.net/api/v1/sub-yards/$subYardId/slots';
+    final response = await http.post(
+      Uri.parse(uri),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+      'date': date,
+      }),
+    );
+    if(response.statusCode == 200){
+      final data = await json.decode(response.body);
+      return data['data'].map((data) => Slot.fromJson(data)).toList().cast<Slot>();
+    }
+    return [];
   }
 
   Future<List<Province>> getAllProvinces() async {
@@ -77,5 +98,37 @@ class Service {
       return data['data'].map((data) => IncomingMatch.fromJson(data)).toList().cast<IncomingMatch>();
     }
     return [];
+  }
+
+  Future<BookingGeneralResponse> book(String authToken, String yardId, List<Slot> slots, String date) async {
+    final uri = 'https://d2bawuzpgqlp7v.cloudfront.net/api/v1/yards/$yardId/booking';
+
+    final slotsBookingRequest = slots.map((e) => BookingRequest.genSimpleRequestFromSlot(e, date)).toList().cast<BookingRequest>();
+
+    final requestBody = jsonEncode(<String, dynamic>{
+      'bookingList': slotsBookingRequest,
+    });
+
+    print('request body: $requestBody');
+    print('authToken: $authToken');
+
+    final response = await http.post(
+      Uri.parse(uri),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'authorization': authToken,
+      },
+      body: requestBody,
+    );
+
+    print('get status code: ${response.statusCode}');
+    print('and body: ${response.body}');
+
+    if(response.statusCode == 200) {
+      final data = await json.decode(response.body);
+      return BookingGeneralResponse(!(data['isError'] as bool), data['message'] as String);
+    }
+
+    return BookingGeneralResponse(false, 'Something went wrong');
   }
 }

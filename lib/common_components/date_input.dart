@@ -1,5 +1,7 @@
+import 'package:booking_app_mobile/cubit/slots_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class DateInput extends StatefulWidget {
@@ -51,7 +53,7 @@ class DateInputState extends State<DateInput> with RestorationMixin {
   String? get restorationId => widget.restorationId;
 
   final RestorableDateTime selectedDate =
-      RestorableDateTime(DateTime(2021, 7, 25));
+      RestorableDateTime(DateTime.now());
   late final RestorableRouteFuture<DateTime?> _restorableDatePickerRouteFuture =
       RestorableRouteFuture<DateTime?>(
     onComplete: _selectDate,
@@ -74,8 +76,8 @@ class DateInputState extends State<DateInput> with RestorationMixin {
           restorationId: 'date_picker_dialog',
           initialEntryMode: DatePickerEntryMode.calendarOnly,
           initialDate: DateTime.fromMillisecondsSinceEpoch(arguments! as int),
-          firstDate: DateTime(2021),
-          lastDate: DateTime(2022),
+          firstDate: DateTime.now(),
+          lastDate: DateTime(2048),
         );
       },
     );
@@ -90,12 +92,17 @@ class DateInputState extends State<DateInput> with RestorationMixin {
 
   void _selectDate(DateTime? newSelectedDate) {
     if (newSelectedDate != null) {
+      // Emit state change event
+      final slotsCubit = BlocProvider.of<SlotsCubit>(context);
+      slotsCubit.selectDate(DateFormat("dd/MM/yyyy").format(newSelectedDate));
+
+      // And setState
       setState(() {
         selectedDate.value = newSelectedDate;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-              'Selected: ${selectedDate.value.day}/${selectedDate.value.month}/${selectedDate.value.year}'),
-        ));
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //   content: Text(
+        //       'Selected: ${selectedDate.value.day}/${selectedDate.value.month}/${selectedDate.value.year}'),
+        // ));
       });
     }
   }

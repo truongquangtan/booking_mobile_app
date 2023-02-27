@@ -1,6 +1,7 @@
+import 'package:booking_app_mobile/cubit/booking_slot_cubit.dart';
 import 'package:booking_app_mobile/models/slot.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SlotWidget extends StatefulWidget {
   final Slot slot;
@@ -17,11 +18,22 @@ class SlotWidget extends StatefulWidget {
 class SlotState extends State<SlotWidget> {
   Color _backgroundColor = Colors.white;
 
-  void _changeColor() {
+  @override
+  void initState() {
+    super.initState();
+    if(widget.slot.isBooked) {
+      _backgroundColor = Color.fromARGB(255, 232, 173, 173);
+    }
+  }
+
+  void _onSlotTap() {
+    final cubit = BlocProvider.of<BookingSlotsCubit>(context);
     setState(() {
-      if(_backgroundColor == Colors.white){
+      if (_backgroundColor == Colors.white) {
+        cubit.selectOneMoreSlot(widget.slot);
         _backgroundColor = Color.fromARGB(255, 20, 132, 189);
-      } else if(_backgroundColor == Color.fromARGB(255, 20, 132, 189)){
+      } else if (_backgroundColor == Color.fromARGB(255, 20, 132, 189)) {
+        cubit.unselectedOneSlot(widget.slot);
         _backgroundColor = Colors.white;
       }
     });
@@ -33,36 +45,39 @@ class SlotState extends State<SlotWidget> {
     final titleSmall = themeData.textTheme.titleSmall;
     final bodyMedium = themeData.textTheme.bodyMedium;
 
-    return GestureDetector(
-      onTap: () {
-        _changeColor();
-      },
-      child: Container(
-        padding: const EdgeInsets.all(8.0),
-        color: _backgroundColor,
-        child: Row(
-          children: [
-            const SizedBox(width: 8.0),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    "${widget.slot.startTime} - ${widget.slot.endTime}",
-                    style: titleSmall,
-                    maxLines: 2,
-                  ),
-                ],
+    return BlocBuilder<BookingSlotsCubit, BookingSlotsState>(
+        builder: (context, state) {
+      return GestureDetector(
+        onTap: () {
+          widget.slot.isBooked ? null : _onSlotTap();
+        },
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          color: _backgroundColor,
+          child: Row(
+            children: [
+              const SizedBox(width: 8.0),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      "${widget.slot.startTime} - ${widget.slot.endTime}",
+                      style: titleSmall,
+                      maxLines: 2,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(width: 8.0),
-            Text(
-              "${widget.slot.price} VNĐ",
-              style: titleSmall,
-            ),
-          ],
+              const SizedBox(width: 8.0),
+              Text(
+                "${widget.slot.price} VNĐ",
+                style: titleSmall,
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

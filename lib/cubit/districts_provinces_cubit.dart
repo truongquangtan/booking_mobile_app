@@ -14,7 +14,7 @@ class DistrictAndProvinceCubit extends Cubit<DistrictsAndProvincesState> {
   // districts
   void getDistricts(int provinceId) async {
     emit(LoadingDistrictsState());
-
+    
     final districts = await service.getDistrictByProvince(provinceId);
 
     emit(LoadedDistrictsState(districts));

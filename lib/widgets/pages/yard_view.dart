@@ -1,4 +1,7 @@
 import 'package:booking_app_mobile/common_components/dropdown.dart';
+import 'package:booking_app_mobile/constant/values.dart';
+import 'package:booking_app_mobile/cubit/booking_slot_cubit.dart';
+import 'package:booking_app_mobile/cubit/slots_cubit.dart';
 import 'package:booking_app_mobile/cubit/yard_cubit.dart';
 import 'package:booking_app_mobile/models/dropdown_option.dart';
 import 'package:booking_app_mobile/models/slot.dart';
@@ -9,17 +12,38 @@ import 'package:booking_app_mobile/widgets/slot_widget.dart';
 import 'package:booking_app_mobile/common_components/star_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
-class YardPage extends StatelessWidget {
+// ignore: must_be_immutable
+class YardPage extends StatefulWidget {
   final String yardId;
-  final GlobalKey<DateInputState> dateInputKey = GlobalKey<DateInputState>();
 
   YardPage(this.yardId, {Key? key}) : super(key: key);
 
   @override
+  State<YardPage> createState() => _YardPageState();
+}
+
+class _YardPageState extends State<YardPage> {
+  String? dateSelected = DateFormat("dd/MM/yyyy").format(DateTime.now());
+
+  String? subYardId;
+
+  final GlobalKey<DateInputState> dateInputKey = GlobalKey<DateInputState>();
+
+  @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<YardCubit>(context);
-    cubit.getYard(yardId);
+    cubit.getYard(widget.yardId);
+
+    final ButtonStyle flatButtonStyle = TextButton.styleFrom(
+        textStyle: TextStyle(fontSize: 18.0),
+        padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        ),
+        backgroundColor: Color.fromARGB(255, 49, 67, 227),
+        foregroundColor: Colors.white);
 
     return Scaffold(
       appBar: AppBar(
@@ -64,12 +88,20 @@ class YardPage extends StatelessWidget {
                     Expanded(
                       child: SingleChildScrollView(
                         padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: _menuCategories(context),
-                        ),
+                        child: _getSlotsWidget(context),
                       ),
                     ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 10.0),
+                        child: TextButton(
+                          onPressed: _onBookClick,
+                          style: flatButtonStyle,
+                          child: Text("Book"),
+                        ))
                   ],
                 ),
               ],
@@ -80,29 +112,78 @@ class YardPage extends StatelessWidget {
     );
   }
 
-  List<Widget> _menuCategories(BuildContext context) {
+  void _onBookClick() {
+    final cubit = BlocProvider.of<BookingSlotsCubit>(context);
+    cubit.bookSomeSlots(dateSelected!, widget.yardId);
+  }
+
+  BlocBuilder _getSlotsWidget(BuildContext context) {
+    return BlocBuilder<SlotsCubit, SlotsState>(
+      builder: (context, state) {
+        if (state is LoadingSlots) {
+          return Loading();
+        }
+
+        if (state is LoadedSlots) {
+          print("loaded slots outside");
+          List<Slot> slots = state.slots;
+          if (subYardId == null || dateSelected == null) {
+            slots = [];
+          }
+          return slotWidgetReactiveBuilder(context, slots);
+        }
+
+        if (state is SelectedADate) {
+          print("select a date state");
+          dateSelected = state.date;
+          if (subYardId != null) {
+            final cubit = BlocProvider.of<SlotsCubit>(context);
+            cubit.getSlots(subYardId!, state.date);
+          }
+        }
+        if (state is SelectedASubYard) {
+          print("select a subyard state");
+          subYardId = state.subYardId;
+          if (dateSelected != null) {
+            final cubit = BlocProvider.of<SlotsCubit>(context);
+            cubit.getSlots(state.subYardId, dateSelected!);
+          }
+        }
+
+        return slotWidgetReactiveBuilder(context, []);
+      },
+    );
+  }
+
+  Widget slotWidgetReactiveBuilder(BuildContext context, List<Slot> slots) {
+    return BlocBuilder<BookingSlotsCubit, BookingSlotsState>(
+      builder: (context, state) {
+        if (state.isJustBooked) {
+          print("just booked");
+          final bookingCubit = BlocProvider.of<BookingSlotsCubit>(context);
+          bookingCubit.removeJustBookedMark();
+          final cubit = BlocProvider.of<SlotsCubit>(context);
+          cubit.getSlots(subYardId!, dateSelected!);
+        }
+
+        if (state.error != '') {
+          // toast error
+        }
+        
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: _slotsWidget(context, slots),
+        );
+      }
+    );
+  }
+
+  List<Widget> _slotsWidget(BuildContext context, List<Slot> slots) {
     List<Widget> items = [];
 
-    Slot slot = Slot(1000, 'abc', 500, '8:00', '9:00', false);
-
-    items.add(
-      SlotWidget(slot: slot, key: UniqueKey()),
-    );
-    items.add(
-      SlotWidget(slot: slot, key: UniqueKey()),
-    );
-    items.add(
-      SlotWidget(slot: slot, key: UniqueKey()),
-    );
-    items.add(
-      SlotWidget(slot: slot, key: UniqueKey()),
-    );
-    items.add(
-      SlotWidget(slot: slot, key: UniqueKey()),
-    );
-    items.add(
-      SlotWidget(slot: slot, key: UniqueKey()),
-    );
+    for (Slot slot in slots) {
+      items.add(SlotWidget(slot: slot, key: Key(slot.id.toString())));
+    }
 
     return items;
   }
@@ -128,7 +209,7 @@ class YardPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Center(child: Text(yard.name, style: boldHeadlineSmall)),
+              Flexible(child: Text(yard.name, style: boldHeadlineSmall)),
               StarRatingBar(
                 rating: yard.score / 20,
                 size: 24.0,
@@ -199,7 +280,8 @@ class YardPage extends StatelessWidget {
                           width: 10,
                         ),
                         Container(
-                          height: 40,alignment: Alignment.center,
+                            height: 40,
+                            alignment: Alignment.center,
                             padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
@@ -207,6 +289,7 @@ class YardPage extends StatelessWidget {
                                     .withAlpha(20)),
                             child: MyDropdownButton(
                               options: options,
+                              forSpecificType: SUB_YARD,
                             ))
                       ],
                     ),

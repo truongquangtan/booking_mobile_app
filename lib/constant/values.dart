@@ -18,5 +18,9 @@ final roundedRect12 = RoundedRectangleBorder(
 );
 
 // Dropdown type
-final String DISTRICT = 'DISTRICT';
-final String PROVINCE = 'PROVINCE';
+// ignore: constant_identifier_names
+const String DISTRICT = 'DISTRICT';
+// ignore: constant_identifier_names
+const String PROVINCE = 'PROVINCE';
+// ignore: constant_identifier_names
+const String SUB_YARD = 'SUB_YARD';

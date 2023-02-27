@@ -4,7 +4,7 @@ class Slot {
   final int price;
   final String startTime;
   final String endTime;
-  final bool isBooked;
+  bool isBooked;
 
   Slot(this.id, this.refSubYard, this.price, this.startTime, this.endTime, this.isBooked);
 

@@ -37,7 +37,6 @@ class DistrictProvinceSelectionState extends State<DistrictProvinceSelection> {
         }
 
         if (state is SelectedAProvince) {
-          print("selected");
           provinceIdSelected = state.provinceId;
           districtOptions = [];
           selectionCubit.getDistricts(provinceIdSelected!);

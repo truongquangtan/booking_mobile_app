@@ -1,5 +1,6 @@
 import 'package:booking_app_mobile/constant/values.dart';
 import 'package:booking_app_mobile/cubit/districts_provinces_cubit.dart';
+import 'package:booking_app_mobile/cubit/slots_cubit.dart';
 import 'package:booking_app_mobile/models/dropdown_option.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
 
 class MyDropdownButton extends StatefulWidget {
-  String? forSpecificType;
+  final String? forSpecificType;
   final List<DropDownOption> options;
   MyDropdownButton({super.key, required this.options, this.forSpecificType});
 
@@ -47,6 +48,12 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
           if(widget.forSpecificType == DISTRICT) {
             final selectionCubit = BlocProvider.of<DistrictAndProvinceCubit>(context);
             selectionCubit.selectDistrict(int.parse(value!));
+          }
+
+          // Emit state change event
+          if(widget.forSpecificType == SUB_YARD) {
+            final slotsCubit = BlocProvider.of<SlotsCubit>(context);
+            slotsCubit.selectSubYard(value!);
           }
 
           dropdownValue = value;

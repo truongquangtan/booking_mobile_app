@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: IndexedStack(index: _currentIndex, children: [
         HomePage(key: UniqueKey()),
-        YardPage('87e4a35e-5f39-4d0c-b9d5-3a544fb550ca'),
+        HomePage(key: UniqueKey()),
         ListPage(
           key: listStateKey,
         ),

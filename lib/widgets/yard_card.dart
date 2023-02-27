@@ -35,7 +35,7 @@ class _YardSimpleCardState extends State<YardCard>
   void viewYard() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => YardPage(widget.yard.id),
+        builder: (context) => YardPage(widget.yard.id, key: Key(widget.yard.id),),
       ),
     );
   }
@@ -144,16 +144,13 @@ class _YardSimpleCardState extends State<YardCard>
           child: Stack(
             children: <Widget>[
               Positioned.fill(
-                child: Hero(
-                  tag: widget.yard.images.first,
-                  child: Image.network(
+                child: Image.network(
                     widget.yard.images.first,
                     fit: BoxFit.cover,
                     loadingBuilder: onImageLoading,
-                  ),
                 ),
               ),
-              YardInfo(yard: widget.yard),
+              Positioned.fill(child: YardInfo(yard: widget.yard),)
             ],
           ),
         ),
