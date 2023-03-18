@@ -41,6 +41,14 @@ class HomePageState extends State<HomePage> {
 
   Widget buildHomePage() {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Basketball playground'),
+        actions: <Widget>[
+          IconButton(onPressed: () {
+
+          }, icon: Icon(Icons.logout))
+        ],
+      ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Container(

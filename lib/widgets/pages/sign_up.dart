@@ -1,17 +1,20 @@
 import 'package:booking_app_mobile/common_components/logo_icon.dart';
+import 'package:booking_app_mobile/cubit/authentication_cubit.dart';
 import 'package:booking_app_mobile/widgets/pages/home_view.dart';
 import 'package:booking_app_mobile/widgets/pages/login.dart';
 import 'package:flutter/gestures.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../common_components/login_form.dart';
 
 class SignUpScreen extends StatelessWidget {
   static const routeName = '/signup';
 
-  void handleSignupFormSubmit(String email, String password) {
-    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+  void handleSignupFormSubmit(String email, String password, String? confirmPassword) async {
+    // await service.
+    await userService.signUp(email, password, confirmPassword);
   }
 
   @override
@@ -110,9 +113,10 @@ class SignUpScreen extends StatelessWidget {
                     child: SizedBox(
                       width: size.width * 0.9,
                       child: LoginForm(
+                        isSignUpPage: true,
                         buttonText: "Sign up",
-                        onSubmit: (email, password) {
-                          handleSignupFormSubmit(email, password);
+                        onSubmit: (email, password, confirmPassword) {
+                          handleSignupFormSubmit(email, password, confirmPassword);
                         },
                       ),
                     ),
@@ -168,8 +172,6 @@ class SignUpScreen extends StatelessWidget {
               )
             ],
           )
-
-          // Add other widgets here, such as text or buttons
         ],
       ),
     ));

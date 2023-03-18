@@ -3,6 +3,8 @@ import 'package:booking_app_mobile/widgets/pages/home_view.dart';
 import 'package:booking_app_mobile/widgets/pages/sign_up.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../common_components/login_form.dart';
 
@@ -12,6 +14,13 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     void handleLoginFormSubmit(String email, String password) {
       Navigator.pushReplacementNamed(context, MyHomePage.routeName);
+    }
+    void _launchUrl(String url) async {
+      if (await canLaunchUrlString(url)) {
+        await launchUrlString(url);
+      } else {
+        throw 'Could not laucnh $url';
+      }
     }
     String email = 'example@email.com';
     String password = 'password123';
@@ -109,7 +118,7 @@ class LoginScreen extends StatelessWidget {
                       width: size.width * 0.9,
                       child: LoginForm(
                         buttonText: "Sign in",
-                        onSubmit: (email, password) {
+                        onSubmit: (email, password, value) {
                           handleLoginFormSubmit(email, password);
                         },
                       ),
@@ -135,10 +144,11 @@ class LoginScreen extends StatelessWidget {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => SignUpScreen()),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(builder: (context) => SignUpScreen()),
+                            // );
+                            _launchUrl('https://master.drp9nteguiet9.amplifyapp.com/auth/signup');
                           },
                       ),
                     ],

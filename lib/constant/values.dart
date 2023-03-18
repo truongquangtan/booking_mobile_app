@@ -24,3 +24,5 @@ const String DISTRICT = 'DISTRICT';
 const String PROVINCE = 'PROVINCE';
 // ignore: constant_identifier_names
 const String SUB_YARD = 'SUB_YARD';
+
+const jwtSecret = 'booking_mobile_app';

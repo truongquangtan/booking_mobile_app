@@ -33,6 +33,13 @@ dependencies:
   flutter:
     sdk: flutter
   font_awesome_flutter: ^9.2.0
+  google_fonts: ^2.1.0
+  flutter_bcrypt: ^1.0.8
+  salt: ^0.1.1
+  jwt_decoder: ^2.0.1
+  dart_jsonwebtoken: ^2.7.1
+  dbcrypt: ^1.0.0
+  url_launcher: ^6.0.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
