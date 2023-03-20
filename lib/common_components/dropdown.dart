@@ -30,42 +30,46 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
     if(widget.options.where((element) => element.value == dropdownValue).isEmpty) {
       dropdownValue = null;
     }
-    return DropdownButton<String>(
-      value: dropdownValue,
-      icon: null,
-      elevation: 16,
-      underline: null,
-      isDense: true,
-      onChanged: (String? value) {
-        setState(() {
-          // Emit state change event
-          if(widget.forSpecificType == PROVINCE) {
-            final selectionCubit = BlocProvider.of<DistrictAndProvinceCubit>(context);
-            selectionCubit.selectProvince(int.parse(value!));
-          }
-          
-          // Emit state change event
-          if(widget.forSpecificType == DISTRICT) {
-            final selectionCubit = BlocProvider.of<DistrictAndProvinceCubit>(context);
-            selectionCubit.selectDistrict(int.parse(value!));
-          }
+    return SizedBox(
+      width: 200,
+      child: DropdownButton<String>(
+        isExpanded: true,
+        value: dropdownValue,
+        icon: null,
+        elevation: 16,
+        underline: null,
+        isDense: true,
+        onChanged: (String? value) {
+          setState(() {
+            // Emit state change event
+            if(widget.forSpecificType == PROVINCE) {
+              final selectionCubit = BlocProvider.of<DistrictAndProvinceCubit>(context);
+              selectionCubit.selectProvince(int.parse(value!));
+            }
+            
+            // Emit state change event
+            if(widget.forSpecificType == DISTRICT) {
+              final selectionCubit = BlocProvider.of<DistrictAndProvinceCubit>(context);
+              selectionCubit.selectDistrict(int.parse(value!));
+            }
 
-          // Emit state change event
-          if(widget.forSpecificType == SUB_YARD) {
-            final slotsCubit = BlocProvider.of<SlotsCubit>(context);
-            slotsCubit.selectSubYard(value!);
-          }
+            // Emit state change event
+            if(widget.forSpecificType == SUB_YARD) {
+              final slotsCubit = BlocProvider.of<SlotsCubit>(context);
+              slotsCubit.selectSubYard(value!);
+            }
 
-          dropdownValue = value;
-        });
-      },
-      onTap: null,
-      items: widget.options.map<DropdownMenuItem<String>>((DropDownOption option) {
-        return DropdownMenuItem<String>(
-          value: option.value,
-          child: Text(option.displayedValue),
-        );
-      }).toList(),
+            dropdownValue = value;
+          });
+        },
+        onTap: null,
+        items: widget.options.map<DropdownMenuItem<String>>((DropDownOption option) {
+          return DropdownMenuItem<String>(
+            value: option.value,
+            child: Text(option.displayedValue),
+          );
+        }).toList(),
+      ),
     );
   }
 }

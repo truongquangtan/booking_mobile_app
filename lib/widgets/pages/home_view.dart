@@ -1,6 +1,7 @@
 import 'package:booking_app_mobile/common_components/loading.dart';
 import 'package:booking_app_mobile/constant/values.dart';
 import 'package:booking_app_mobile/cubit/yard_list_cubit.dart';
+import 'package:booking_app_mobile/cubit/yard_list_static_cubit.dart';
 import 'package:booking_app_mobile/models/yard_simple.dart';
 import 'package:booking_app_mobile/widgets/yard_card.dart';
 import 'package:booking_app_mobile/widgets/district_province_section.dart';
@@ -65,7 +66,7 @@ class HomePageState extends State<HomePage> {
               SizedBox(
                 height: 10,
               ),
-              buildYardList(),
+              buildStaticYardList(),
               const ContentTitle(title: 'All Yards'),
               DistrictProvinceSelection(key: UniqueKey(),),
               SizedBox(
@@ -79,6 +80,37 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+   Widget buildStaticYardList() {
+    final yardListStaticCubit = BlocProvider.of<YardListStaticCubit>(context);
+    yardListStaticCubit.getYardList(null, null);
+
+    return BlocBuilder<YardListStaticCubit, YardListStaticState>(
+      builder: (context, state){
+        if(state is LoadingYardListStaticState) {
+          return Loading();
+        }
+        if(state is LoadedYardListStaticState) {
+          yards = state.yards;
+        }
+
+        return Column(
+          children: [
+            SizedBox(
+              height: 350,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+                itemCount: yards.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return YardCard(yard: yards[index]);
+                },
+              ),
+            ),
+          ],
+        );
+      }
+    );
+  }
 
   Widget buildYardList() {
     final yardListCubit = BlocProvider.of<YardListCubit>(context);

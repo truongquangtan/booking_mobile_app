@@ -31,8 +31,6 @@ class DateInputState extends State<DateInput> with RestorationMixin {
         height: 40,
         child: GestureDetector(
           onTap: () {
-            //_showDialog(incomingMatch: incomingMatch);
-            print("tap");
             _restorableDatePickerRouteFuture.present();
           },
           child: AnimatedContainer(

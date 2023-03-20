@@ -1,10 +1,7 @@
 import 'package:booking_app_mobile/main.dart';
-import 'package:booking_app_mobile/widgets/pages/home_view.dart';
-import 'package:booking_app_mobile/widgets/pages/sign_up.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../common_components/login_form.dart';
 
@@ -16,11 +13,7 @@ class LoginScreen extends StatelessWidget {
       Navigator.pushReplacementNamed(context, MyHomePage.routeName);
     }
     void _launchUrl(String url) async {
-      if (await canLaunchUrlString(url)) {
-        await launchUrlString(url);
-      } else {
-        throw 'Could not laucnh $url';
-      }
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     }
     String email = 'example@email.com';
     String password = 'password123';

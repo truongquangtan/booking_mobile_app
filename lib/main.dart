@@ -25,7 +25,6 @@ Future<void> readJson() async {
   
   final data = await json.decode(response);
   Slot slot = Slot.fromJson(data);
-  print(slot.price);
 }
 
 class MyApp extends StatelessWidget {
@@ -84,7 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: IndexedStack(index: _currentIndex, children: [
         HomePage(key: UniqueKey()),
-        HomePage(key: UniqueKey()),
         ListPage(
           key: listStateKey,
         ),
@@ -136,7 +134,6 @@ class _MyHomePageState extends State<MyHomePage> {
       unselectedItemColor: Color.fromARGB(223, 22, 21, 21),
       selectedItemColor: Color.fromARGB(223, 41, 47, 242),
       items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
         BottomNavigationBarItem(icon: Icon(Icons.date_range), label: 'Book'),
         BottomNavigationBarItem(
             icon: Icon(Icons.access_alarm), label: 'Incoming'),

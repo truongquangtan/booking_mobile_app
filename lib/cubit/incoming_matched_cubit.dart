@@ -10,11 +10,22 @@ class IncomingMatchCubit extends Cubit<IncomingMatchState> {
 
   IncomingMatchCubit() : super(const LoadingIncomingMatchesState());
 
-  void getIncomingMatches(String? authToken) async {
+  void getIncomingMatches() async {
     emit(LoadingIncomingMatchesState());
 
-    final incomingMatches = await service.getIncomingMatch
-    ('Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxZTc3OTQ4OC1kMTU1LTRjYmEtYWVkNS1lNGZkNzMzYWY1MzEiLCJmdWxsTmFtZSI6IlRydW9uZyBRdWFuZyBUYW4iLCJlbWFpbCI6InRydW9uZ3F1YW5ndGFuMjAwMUBnbWFpbC5jb20iLCJwaG9uZSI6IjA4NDQxMTEwMDEiLCJyb2xlIjoidXNlciIsImlzQ29uZmlybWVkIjp0cnVlLCJpYXQiOjE2NzczNDA2NDQsImV4cCI6MTY3OTA2ODY0NH0.FrFqZkQECrQSavqiUQSX47usxzUv0TewgvsZ_xv-9VvgTPvtBNmta0uXGH6xvRdFa5E7U9QcUO9BCpahv5ZdCQ');
+    const authToken = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzODMxN2ZmMy03NjI2LTQ2MWYtOGUyMy0xMGE1MjExNGY0NGEiLCJmdWxsTmFtZSI6IlRyxrDGoW5nIFF1YW5nIFTDom4iLCJlbWFpbCI6InF1YW5ndGFuOWJnbUBnbWFpbC5jb20iLCJwaG9uZSI6IjA4NDQxMTEyMjIiLCJyb2xlIjoidXNlciIsImlzQ29uZmlybWVkIjp0cnVlLCJpYXQiOjE2NzkzNTM4MTEsImV4cCI6MTY4MTA4MTgxMX0.Wp73evwjlkAlWLETNkVLCb4FY4QaTSkPub8N26Zyi5b_70IH9LfWGYVf_jpMmQtWuY8CbnTKXdHyvaDrVNzdwQ';
+
+    final incomingMatches = await service.getIncomingMatch(authToken);
+
+    emit(LoadedIncomingMatchesState(incomingMatches));
+  }
+
+  void cancelMatch(String bookingId) async {
+    emit(LoadingIncomingMatchesState());
+
+    const authToken = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzODMxN2ZmMy03NjI2LTQ2MWYtOGUyMy0xMGE1MjExNGY0NGEiLCJmdWxsTmFtZSI6IlRyxrDGoW5nIFF1YW5nIFTDom4iLCJlbWFpbCI6InF1YW5ndGFuOWJnbUBnbWFpbC5jb20iLCJwaG9uZSI6IjA4NDQxMTEyMjIiLCJyb2xlIjoidXNlciIsImlzQ29uZmlybWVkIjp0cnVlLCJpYXQiOjE2NzkzNTM4MTEsImV4cCI6MTY4MTA4MTgxMX0.Wp73evwjlkAlWLETNkVLCb4FY4QaTSkPub8N26Zyi5b_70IH9LfWGYVf_jpMmQtWuY8CbnTKXdHyvaDrVNzdwQ';
+    await service.cancelBookingMatch(authToken, bookingId);
+    final incomingMatches = await service.getIncomingMatch(authToken);
 
     emit(LoadedIncomingMatchesState(incomingMatches));
   }

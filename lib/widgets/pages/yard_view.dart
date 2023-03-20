@@ -8,11 +8,13 @@ import 'package:booking_app_mobile/models/slot.dart';
 import 'package:booking_app_mobile/models/yard_model.dart';
 import 'package:booking_app_mobile/common_components/date_input.dart';
 import 'package:booking_app_mobile/common_components/loading.dart';
+import 'package:booking_app_mobile/widgets/slot_in_cart_widget.dart';
 import 'package:booking_app_mobile/widgets/slot_widget.dart';
 import 'package:booking_app_mobile/common_components/star_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable
 class YardPage extends StatefulWidget {
@@ -35,15 +37,6 @@ class _YardPageState extends State<YardPage> {
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<YardCubit>(context);
     cubit.getYard(widget.yardId);
-
-    final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-        textStyle: TextStyle(fontSize: 18.0),
-        padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-        ),
-        backgroundColor: Color.fromARGB(255, 49, 67, 227),
-        foregroundColor: Colors.white);
 
     return Scaffold(
       appBar: AppBar(
@@ -95,13 +88,13 @@ class _YardPageState extends State<YardPage> {
                       height: 10.0,
                     ),
                     Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.fromLTRB(0, 0, 0, 10.0),
-                        child: TextButton(
-                          onPressed: _onBookClick,
-                          style: flatButtonStyle,
-                          child: Text("Book"),
-                        ))
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 10.0),
+                      child: ElevatedButton(
+                        onPressed: _onBookClick,
+                        child: const Text('Book'),
+                      ),
+                    )
                   ],
                 ),
               ],
@@ -113,8 +106,80 @@ class _YardPageState extends State<YardPage> {
   }
 
   void _onBookClick() {
-    final cubit = BlocProvider.of<BookingSlotsCubit>(context);
-    cubit.bookSomeSlots(dateSelected!, widget.yardId);
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return BlocBuilder<BookingSlotsCubit, BookingSlotsState>(
+            builder: (context, state) {
+          int totalPrice = 0;
+          for (var slot in state.slots) {
+            totalPrice += slot.price;
+          }
+          final currencyFormat = NumberFormat.currency(
+              locale: 'vi-VN', symbol: 'đ', decimalDigits: 0);
+          final currencyDisplay = currencyFormat.format(totalPrice);
+          return Container(
+            height: 900,
+            color: Color(int.parse("0xff0000ff")).withAlpha(20),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Text(
+                    'Your booking slot summary: ',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border(
+                            top: BorderSide(width: 0.5),
+                            bottom: BorderSide(width: 0.5))),
+                    height: 200,
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: _slotInCartWidget(context, state.slots)),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Text(
+                    'Total amount: $currencyDisplay',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                  ),
+                  const SizedBox(height: 8.0),
+                  ElevatedButton(
+                    child: const Text('Confirm'),
+                    onPressed: () {
+                      final bookingCubit = BlocProvider.of<BookingSlotsCubit>(context);
+                      bookingCubit.bookSomeSlots(dateSelected!, widget.yardId);
+
+                      Navigator.pop(context);
+                      Fluttertoast.showToast(
+                        msg: "Booking successfully.",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Color.fromARGB(255, 0, 255, 115),
+                        textColor: Color.fromARGB(255, 0, 0, 0),
+                        fontSize: 16.0
+                      );
+                    }
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+      },
+    );
   }
 
   BlocBuilder _getSlotsWidget(BuildContext context) {
@@ -125,7 +190,6 @@ class _YardPageState extends State<YardPage> {
         }
 
         if (state is LoadedSlots) {
-          print("loaded slots outside");
           List<Slot> slots = state.slots;
           if (subYardId == null || dateSelected == null) {
             slots = [];
@@ -134,7 +198,6 @@ class _YardPageState extends State<YardPage> {
         }
 
         if (state is SelectedADate) {
-          print("select a date state");
           dateSelected = state.date;
           if (subYardId != null) {
             final cubit = BlocProvider.of<SlotsCubit>(context);
@@ -142,7 +205,6 @@ class _YardPageState extends State<YardPage> {
           }
         }
         if (state is SelectedASubYard) {
-          print("select a subyard state");
           subYardId = state.subYardId;
           if (dateSelected != null) {
             final cubit = BlocProvider.of<SlotsCubit>(context);
@@ -157,25 +219,23 @@ class _YardPageState extends State<YardPage> {
 
   Widget slotWidgetReactiveBuilder(BuildContext context, List<Slot> slots) {
     return BlocBuilder<BookingSlotsCubit, BookingSlotsState>(
-      builder: (context, state) {
-        if (state.isJustBooked) {
-          print("just booked");
-          final bookingCubit = BlocProvider.of<BookingSlotsCubit>(context);
-          bookingCubit.removeJustBookedMark();
-          final cubit = BlocProvider.of<SlotsCubit>(context);
-          cubit.getSlots(subYardId!, dateSelected!);
-        }
-
-        if (state.error != '') {
-          // toast error
-        }
-        
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: _slotsWidget(context, slots),
-        );
+        builder: (context, state) {
+      if (state.isJustBooked) {
+        final bookingCubit = BlocProvider.of<BookingSlotsCubit>(context);
+        bookingCubit.removeJustBookedMark();
+        final cubit = BlocProvider.of<SlotsCubit>(context);
+        cubit.getSlots(subYardId!, dateSelected!);
       }
-    );
+
+      if (state.error != '') {
+        // toast error
+      }
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: _slotsWidget(context, slots),
+      );
+    });
   }
 
   List<Widget> _slotsWidget(BuildContext context, List<Slot> slots) {
@@ -183,6 +243,16 @@ class _YardPageState extends State<YardPage> {
 
     for (Slot slot in slots) {
       items.add(SlotWidget(slot: slot, key: Key(slot.id.toString())));
+    }
+
+    return items;
+  }
+
+  List<Widget> _slotInCartWidget(BuildContext context, List<Slot> slots) {
+    List<Widget> items = [];
+
+    for (Slot slot in slots) {
+      items.add(SlotInCartWidget(slot: slot, key: Key(slot.id.toString())));
     }
 
     return items;

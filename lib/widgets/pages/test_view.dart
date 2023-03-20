@@ -27,7 +27,6 @@ class _TestScreenState extends State<TestScreen> {
       minTime: DateTime(1950, 1, 1),
       maxTime: DateTime.now(),
       onChanged: (date) {
-        print('change $date');
       },
       onConfirm: (date) {
         setState(() {

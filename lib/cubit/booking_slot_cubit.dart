@@ -8,37 +8,42 @@ import 'package:booking_app_mobile/service/service.dart';
 class BookingSlotsCubit extends Cubit<BookingSlotsState> {
   final Service service = getIt<Service>();
 
-  BookingSlotsCubit() : super(BookingSlotsState(slots: [], isLoading: false, error: '', isJustBooked: false));
+  BookingSlotsCubit() : super(BookingSlotsState(slots: [], isLoading: false, error: '', isJustBooked: false, targetSlot: null, isSelected: null));
 
   void selectOneMoreSlot(Slot slot) {
     if(state.isJustBooked) {
-      emit(state.copyWith(slots: [], error: '', isLoading: false, isJustBooked: false));
+      emit(state.copyWith(slots: [], error: '', isLoading: false, isJustBooked: false, targetSlot: null, isSelected: null));
     }
-    final slots = state.slots;
-    slots.add(slot);
-    emit(state.copyWith(slots: slots, error: '', isLoading: false, isJustBooked: false));
+    final slots = [...state.slots];
+    final index = slots.indexWhere((element) => element.id == slot.id);
+    if(index < 0){
+      slots.add(slot);
+    }
+    emit(state.copyWith(slots: slots, error: '', isLoading: false, isJustBooked: false, targetSlot: slot, isSelected: true));
   }
 
   void unselectedOneSlot(Slot slot) {
-    final slots = state.slots;
+    final slots = [...state.slots];
     final index = slots.indexWhere((element) => element.id == slot.id);
-    slots.removeAt(index);
-    emit(state.copyWith(slots: slots, error: '', isLoading: false, isJustBooked: false));
+    if(index >= 0) {
+      slots.removeAt(index);
+    }
+    emit(state.copyWith(slots: slots, error: '', isLoading: false, isJustBooked: false, targetSlot: slot, isSelected: false));
   }
 
   void bookSomeSlots(String date, String yardId) async {
-    final slots = state.slots;
+    final slots = [...state.slots];
 
-    emit(state.copyWith(slots: slots, error: '', isLoading: true, isJustBooked: false));
+    emit(state.copyWith(slots: slots, error: '', isLoading: true, isJustBooked: false, targetSlot: null, isSelected: null));
 
-    const authToken = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxZTc3OTQ4OC1kMTU1LTRjYmEtYWVkNS1lNGZkNzMzYWY1MzEiLCJmdWxsTmFtZSI6IlRydW9uZyBRdWFuZyBUYW4iLCJlbWFpbCI6InRydW9uZ3F1YW5ndGFuMjAwMUBnbWFpbC5jb20iLCJwaG9uZSI6IjA4NDQxMTEwMDEiLCJyb2xlIjoidXNlciIsImlzQ29uZmlybWVkIjp0cnVlLCJpYXQiOjE2NzczNDA2NDQsImV4cCI6MTY3OTA2ODY0NH0.FrFqZkQECrQSavqiUQSX47usxzUv0TewgvsZ_xv-9VvgTPvtBNmta0uXGH6xvRdFa5E7U9QcUO9BCpahv5ZdCQ';
+    const authToken = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzODMxN2ZmMy03NjI2LTQ2MWYtOGUyMy0xMGE1MjExNGY0NGEiLCJmdWxsTmFtZSI6IlRyxrDGoW5nIFF1YW5nIFTDom4iLCJlbWFpbCI6InF1YW5ndGFuOWJnbUBnbWFpbC5jb20iLCJwaG9uZSI6IjA4NDQxMTEyMjIiLCJyb2xlIjoidXNlciIsImlzQ29uZmlybWVkIjp0cnVlLCJpYXQiOjE2NzkzNTM4MTEsImV4cCI6MTY4MTA4MTgxMX0.Wp73evwjlkAlWLETNkVLCb4FY4QaTSkPub8N26Zyi5b_70IH9LfWGYVf_jpMmQtWuY8CbnTKXdHyvaDrVNzdwQ';
     final response = await service.book(authToken, yardId, slots, date);
 
-    emit(state.copyWith(slots: slots, error: response.isSuccess ? '' : response.errorMessage , isLoading: false, isJustBooked: true));
+    emit(state.copyWith(slots: slots, error: response.isSuccess ? '' : response.errorMessage , isLoading: false, isJustBooked: true, targetSlot: null, isSelected: null));
   }
 
   void removeJustBookedMark() {
-    emit(state.copyWith(slots: [], error: '', isLoading: false, isJustBooked: false));
+    emit(state.copyWith(slots: [], error: '', isLoading: false, isJustBooked: false, targetSlot: null, isSelected: null));
   }
 }
 
@@ -48,12 +53,16 @@ class BookingSlotsState extends Equatable {
   final bool isLoading;
   final String error;
   final bool isJustBooked;
+  final Slot? targetSlot;
+  final bool? isSelected;
   
   BookingSlotsState({
     required this.slots,
     required this.isLoading,
     required this.error,
     required this.isJustBooked,
+    required this.targetSlot,
+    required this.isSelected,
   });
 
   BookingSlotsState copyWith({
@@ -61,10 +70,18 @@ class BookingSlotsState extends Equatable {
     bool? isLoading,
     String? error,
     bool? isJustBooked,
+    Slot? targetSlot,
+    bool? isSelected,
   }) {
-    return BookingSlotsState(slots: slots ?? this.slots, isLoading: isLoading ?? this.isLoading, error: error ?? this.error, isJustBooked: isJustBooked ?? this.isJustBooked);
+    return BookingSlotsState(
+      slots: slots ?? this.slots,
+      isLoading: isLoading ?? this.isLoading,
+      error: error ?? this.error,
+      isJustBooked: isJustBooked ?? this.isJustBooked,
+      targetSlot: targetSlot,
+      isSelected: isSelected);
   }
 
   @override
-  List<Object?> get props => [slots, isLoading, error];
+  List<Object?> get props => [slots, isLoading, error, isJustBooked, targetSlot, isSelected];
 }

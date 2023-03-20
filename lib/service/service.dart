@@ -100,6 +100,24 @@ class Service {
     return [];
   }
 
+  Future<bool> cancelBookingMatch(String authToken, String bookingId) async {
+    final uri = 'https://d2bawuzpgqlp7v.cloudfront.net/api/v1/me/bookings/$bookingId';
+    final response = await http.delete(
+      Uri.parse(uri),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'authorization': authToken,
+      },
+      body: jsonEncode(<String, String>{
+      'reason': "[From Mobile] I want to cancel this booking.",
+      }),
+    );
+    if(response.statusCode == 200){
+      return true;
+    }
+    return false;
+  }
+
   Future<BookingGeneralResponse> book(String authToken, String yardId, List<Slot> slots, String date) async {
     final uri = 'https://d2bawuzpgqlp7v.cloudfront.net/api/v1/yards/$yardId/booking';
 
@@ -109,9 +127,6 @@ class Service {
       'bookingList': slotsBookingRequest,
     });
 
-    print('request body: $requestBody');
-    print('authToken: $authToken');
-
     final response = await http.post(
       Uri.parse(uri),
       headers: <String, String>{
@@ -120,9 +135,6 @@ class Service {
       },
       body: requestBody,
     );
-
-    print('get status code: ${response.statusCode}');
-    print('and body: ${response.body}');
 
     if(response.statusCode == 200) {
       final data = await json.decode(response.body);

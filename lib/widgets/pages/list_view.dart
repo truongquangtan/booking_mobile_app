@@ -1,10 +1,9 @@
-import 'dart:convert';
 import 'package:booking_app_mobile/common_components/loading.dart';
 import 'package:booking_app_mobile/cubit/incoming_matched_cubit.dart';
 import 'package:booking_app_mobile/models/incomingMatch.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ListPage extends StatefulWidget {
   const ListPage({Key? key}) : super(key: key);
@@ -24,7 +23,7 @@ class ListPageState extends State<ListPage> {
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<IncomingMatchCubit>(context);
-    cubit.getIncomingMatches(null);
+    cubit.getIncomingMatches();
 
     return BlocBuilder<IncomingMatchCubit, IncomingMatchState>(
       builder: (context, state) {
@@ -44,6 +43,14 @@ class ListPageState extends State<ListPage> {
 
   Scaffold buildListView() {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Basketball playground'),
+        actions: <Widget>[
+          IconButton(onPressed: () {
+
+          }, icon: Icon(Icons.logout))
+        ],
+      ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -150,38 +157,36 @@ class ListPageState extends State<ListPage> {
           SizedBox(
             height: 10,
           ),
-          Container(
-            child: Row(
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Color(int.parse("0xff0000ff")).withAlpha(20)),
-                      child: Text(
-                        incomingMatch.date,
-                        style: TextStyle(color: Color(int.parse("0xff0000ff"))),
-                      ),
+          Row(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Color(int.parse("0xff0000ff")).withAlpha(20)),
+                    child: Text(
+                      incomingMatch.date,
+                      style: TextStyle(color: Color(int.parse("0xff0000ff"))),
                     ),
-                    SizedBox(width: 5),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Color(int.parse("0xff0000ff")).withAlpha(20)),
-                      child: Text(
-                        "${incomingMatch.startTime} - ${incomingMatch.endTime}",
-                        style: TextStyle(color: Color(int.parse("0xff0000ff"))),
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                  SizedBox(width: 5),
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Color(int.parse("0xff0000ff")).withAlpha(20)),
+                    child: Text(
+                      "${incomingMatch.startTime} - ${incomingMatch.endTime}",
+                      style: TextStyle(color: Color(int.parse("0xff0000ff"))),
+                    ),
+                  )
+                ],
+              ),
+            ],
           )
         ],
       ),
@@ -194,23 +199,30 @@ class ListPageState extends State<ListPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Bạn có muốn lưu thay đổi không?'),
+          title: Text('Are you sure to cancel this booking?'),
           contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
           actions: [
             TextButton(
-              child: Text('Không'),
+              child: Text('No'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Có'),
+              child: Text('Yes'),
               onPressed: () {
-                // Thực hiện hành động ở đây khi người dùng chọn "Có"
-                setState(() {
-                  //call api
-                });
+                final cubit = BlocProvider.of<IncomingMatchCubit>(context);
+                cubit.cancelMatch(incomingMatch.bookingId);
                 Navigator.of(context).pop();
+                Fluttertoast.showToast(
+                  msg: "Cancel the booking successfully.",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Color.fromARGB(255, 0, 255, 115),
+                  textColor: Color.fromARGB(255, 0, 0, 0),
+                  fontSize: 16.0
+                );
               },
             ),
           ],
