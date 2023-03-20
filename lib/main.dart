@@ -5,8 +5,7 @@ import 'package:booking_app_mobile/models/slot.dart';
 import 'package:booking_app_mobile/common_components/date_input.dart';
 import 'package:booking_app_mobile/widgets/pages/home_view.dart';
 import 'package:booking_app_mobile/widgets/pages/login.dart';
-import 'package:booking_app_mobile/widgets/pages/sign_up.dart';
-import 'package:booking_app_mobile/widgets/pages/yard_view.dart';
+import 'package:booking_app_mobile/widgets/pages/verify_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:booking_app_mobile/widgets/pages/list_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,7 +41,7 @@ class MyApp extends StatelessWidget {
         initialRoute: LoginScreen.routeName, // Set the initial route
         routes: {
           LoginScreen.routeName: (context) => LoginScreen(),
-          SignUpScreen.routeName: (context) => SignUpScreen(),
+          VerifyOtpPage.routeName: (context) => VerifyOtpPage(),
           MyHomePage.routeName: (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
         },
       ),

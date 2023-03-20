@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class LoginForm extends StatefulWidget {
   final void Function(String, String, String?) onSubmit;
   final String buttonText;
-  final bool isSignUpPage;
-  const LoginForm({super.key, required this.buttonText, required this.onSubmit, this.isSignUpPage = false});
+  const LoginForm({super.key, required this.buttonText, required this.onSubmit});
 
   @override
   _LoginFormState createState() => _LoginFormState();
@@ -14,7 +13,6 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   String _email = '';
   String _password = '';
-  String _confirmPassword = '';
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +28,9 @@ class _LoginFormState extends State<LoginForm> {
               }
               return null;
             },
-            onSaved: (value) => _email = value!.trim(),
+            onChanged: (value) => setState(() {
+              _email = value.toString();
+            }),
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.never,
               filled: true,
@@ -71,7 +71,9 @@ class _LoginFormState extends State<LoginForm> {
               }
               return null;
             },
-            onSaved: (value) => _password = value!.trim(),
+            onChanged: (value) => setState(() {
+              _password = value.toString();
+            }),
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.never,
               filled: true,
@@ -100,52 +102,6 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
           ),
-          if (widget.isSignUpPage)
-            Column(
-              children: [
-                SizedBox(height: 16),
-                TextFormField(
-                  obscureText: true,
-                  cursorColor: Colors.white,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your confirm password';
-                    } else if (value != _password) {
-                      return 'Confirm password does not match with password';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) => _confirmPassword = value!.trim(),
-                  decoration: InputDecoration(
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                    filled: true,
-                    labelText: 'Confirm password',
-                    hintStyle: TextStyle(color: Colors.white),
-                    border: OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      borderSide: BorderSide(
-                        color: Colors.transparent,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      borderSide: BorderSide(
-                        color: Colors.transparent,
-                      ),
-                    ),
-                    fillColor: Colors.white.withOpacity(0.5),
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.only(top: 8), // add padding to adjust icon
-                      child: Icon(
-                        Icons.lock_outline_rounded,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ]
-            ),
           SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
