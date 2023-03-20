@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:booking_app_mobile/models/user.dart';
 import 'package:http/http.dart' as http;
@@ -11,27 +12,26 @@ class UserService {
 
   UserService({required this.apiUrl, required this.jwtSecret});
 
-  Future<String?> signUp(String email, String password, String? confirmPassword) async {
-    final response = await http.post(
-      Uri.parse('$apiUrl/register'),
-      body: {'email': email, 'password': password, 'confirmPassword': confirmPassword},
-    );
+  Future<String> signIn(String email, String password) async {
 
-    if (response.statusCode == 201) {
-      return response.body;
-    } else {
-      throw Exception('Failed to sign up');
-    }
-  }
-
-  Future<String?> signIn(String email, String password) async {
     final response = await http.post(
       Uri.parse('$apiUrl/login'),
-      body: {'email': email, 'password': password},
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body:jsonEncode(<String, String> {
+        'username': email,
+        'password': password,
+      }
+      ),
     );
 
     if (response.statusCode == 200) {
-      return response.body;
+        final data = await json.decode(response.body);
+        final storage = FlutterSecureStorage();
+        await storage.write(key: 'jwt', value: data.token);
+        await storage.write(key: 'isConfirm', value: data.isConfirm);
+        return data;
     } else {
       throw Exception('Failed to sign in');
     }
@@ -58,16 +58,6 @@ class UserService {
   Future<String> hashPassword(String password) {
     return FlutterBcrypt.hashPw(password: password, salt: '12');
   }
-
-  // String generateToken(User user) {
-  //   final jwt = JWT({
-  //     'iss': 'your_issuer_name',
-  //     'sub': user.id,
-  //     'email': user.email,
-  //     'exp': DateTime.now().add(Duration(days: 7)).millisecondsSinceEpoch ~/ 1000
-  //   });
-  //   return JWT.verify(jwt);
-  // }
 
   Map<String, dynamic> decodeToken(String token) {
     final jwt = JWT.verify(token, SecretKey(jwtSecret));

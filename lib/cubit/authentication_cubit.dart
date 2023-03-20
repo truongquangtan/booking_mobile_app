@@ -3,6 +3,8 @@ import 'package:bloc/bloc.dart';
 import 'package:booking_app_mobile/cubit/authentication_state.dart';
 import 'package:booking_app_mobile/service/user_service.dart';
 import 'package:flutter_bcrypt/flutter_bcrypt.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 class AuthenticationCubit extends Cubit<AuthenticationState> {
 
@@ -13,26 +15,15 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Future<void> login(String email, String password) async {
     try {
       // call the user service to check the user credentials
+      final storage = FlutterSecureStorage();
       final user = await userService.signIn(email, password);
-
-      // generate the JWT token
-      // final jwt = _generateJwt(email);
-
-      // generate the bcrypt hash of the password
-      final bcrypt = _generateBcryptHash(password);
-
-      // store the JWT and bcrypt hash in the state
-      emit(Authenticated(bcrypt: bcrypt));
+      if (user != null) {
+        var isConfirm = await storage.read(key: 'isConfirm');
+        emit(Authenticated(isConfirm: isConfirm == 'true'));
+      }
     } catch (e) {
       emit(LoginFailed(error: e.toString()));
     }
-  }
-
-  String _generateBcryptHash(String password) {
-    final hash =   FlutterBcrypt.hashPw(password: password, salt: '12').toString();
-
-    return hash;
+    return null;
   }
 }
-final userService = UserService(apiUrl: 'https://d2bawuzpgqlp7v.cloudfront.net/api/v1', jwtSecret: 'my_secret_key');
-final authenticationCubit = AuthenticationCubit(userService: userService);

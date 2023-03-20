@@ -1,19 +1,29 @@
-import 'package:booking_app_mobile/main.dart';
-import 'package:booking_app_mobile/widgets/pages/home_view.dart';
-import 'package:booking_app_mobile/widgets/pages/sign_up.dart';
+import 'package:booking_app_mobile/cubit/authentication_cubit.dart';
+import 'package:booking_app_mobile/widgets/pages/verify_otp.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../common_components/login_form.dart';
+import '../../main.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/login';
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<AuthenticationCubit>(context);
     void handleLoginFormSubmit(String email, String password) {
-      Navigator.pushReplacementNamed(context, MyHomePage.routeName);
+      final storage = FlutterSecureStorage();
+      var isConfirm = storage.read(key: 'isConfirm');
+
+      if (isConfirm == 'true') {
+        print(isConfirm);
+        Navigator.pushReplacementNamed(context, MyHomePage.routeName);
+      } else {
+        Navigator.pushReplacementNamed(context, VerifyOtpPage.routeName);
+      }
     }
     void _launchUrl(String url) async {
       if (await canLaunchUrlString(url)) {
@@ -22,8 +32,6 @@ class LoginScreen extends StatelessWidget {
         throw 'Could not laucnh $url';
       }
     }
-    String email = 'example@email.com';
-    String password = 'password123';
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         body: Container(
@@ -95,7 +103,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 60, bottom: 80),
+                margin: EdgeInsets.only(top: 60, bottom: 40),
                 child: Text.rich(
                   TextSpan(
                     children: <TextSpan>[
@@ -144,10 +152,6 @@ class LoginScreen extends StatelessWidget {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => SignUpScreen()),
-                            // );
                             _launchUrl('https://master.drp9nteguiet9.amplifyapp.com/auth/signup');
                           },
                       ),
@@ -155,20 +159,17 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Text.rich(
-                  TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: 'Forgot password',
-                          mouseCursor: MaterialStateMouseCursor.clickable,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.white)),
-                    ],
-                  ),
+              Text.rich(
+                TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: 'Forgot password',
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.white)),
+                  ],
                 ),
               ),
             ],

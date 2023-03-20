@@ -5,19 +5,22 @@ abstract class AuthenticationState extends Equatable {
 
   @override
   List<Object?> get props => [];
+
+  bool get isConfirm => false;
 }
 
 class Unauthenticated extends AuthenticationState {}
 
 class Authenticated extends AuthenticationState {
-  final String bcrypt;
+  @override
+  final bool isConfirm;
 
   const Authenticated({
-    required this.bcrypt,
+    required this.isConfirm,
   });
 
   @override
-  List<Object?> get props => [bcrypt];
+  List<Object?> get props => [isConfirm];
 }
 
 class LoginFailed extends AuthenticationState {
