@@ -53,7 +53,7 @@ class _YardPageState extends State<YardPage> {
         builder: (context, state) {
           final bookingCubit = BlocProvider.of<BookingSlotsCubit>(context);
           bookingCubit.refreshSelectedSlots();
-          
+
           if (state is InitialYardState) {
             return const Loading();
           } else {
@@ -159,8 +159,7 @@ class _YardPageState extends State<YardPage> {
                   ),
                   const SizedBox(height: 8.0),
                   ElevatedButton(
-                    child: const Text('Confirm'),
-                    onPressed: () {
+                    onPressed: state.slots.isNotEmpty ? () {
                       final bookingCubit = BlocProvider.of<BookingSlotsCubit>(context);
                       bookingCubit.bookSomeSlots(dateSelected!, widget.yardId);
 
@@ -174,7 +173,8 @@ class _YardPageState extends State<YardPage> {
                         textColor: Color.fromARGB(255, 0, 0, 0),
                         fontSize: 16.0
                       );
-                    }
+                    } : null,
+                    child: const Text('Confirm')
                   ),
                 ],
               ),
