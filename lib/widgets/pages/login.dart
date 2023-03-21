@@ -1,6 +1,7 @@
 import 'package:booking_app_mobile/constant/values.dart';
 import 'package:booking_app_mobile/cubit/authentication_cubit.dart';
 import 'package:booking_app_mobile/main.dart';
+import 'package:booking_app_mobile/widgets/pages/signup.dart';
 import 'package:booking_app_mobile/widgets/pages/verify_otp.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +127,7 @@ class LoginScreen extends StatelessWidget {
                       width: size.width * 0.9,
                       child: LoginForm(
                         buttonText: "Sign in",
-                        onSubmit: (email, password, value) {
+                        onSubmit: (email, password, value, value2, value3) {
                           handleLoginFormSubmit(email, password);
                         },
                       ),
@@ -152,7 +153,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            _launchUrl('https://master.drp9nteguiet9.amplifyapp.com/auth/signup');
+                            Navigator.pushReplacementNamed(context, SignupScreen.routeName);
                           },
                       ),
                     ],
@@ -174,7 +175,6 @@ class LoginScreen extends StatelessWidget {
               ),
             ],
           )
-
           // Add other widgets here, such as text or buttons
         ],
       ),

@@ -12,7 +12,28 @@ class UserService {
   final String jwtSecret;
 
   UserService({required this.apiUrl, required this.jwtSecret});
+  Future<bool> register(String email, String password, String confirmPassword, String fullname, String phoneNumber) async {
+    final response = await http.post(
+      Uri.parse('$apiUrl/register'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body:jsonEncode(<String, String> {
+        'email': email,
+        'password': password,
+        'confirmPassword': confirmPassword,
+        'fullName': fullname,
+        'phone': phoneNumber,
+      }
+      ),
+    );
 
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to sign in');
+    }
+  }
   Future<void> signIn(String email, String password) async {
 
     final response = await http.post(
@@ -53,6 +74,54 @@ class UserService {
 
   Future<bool> verifyPassword(String password, String hashedPassword) {
     return  FlutterBcrypt.verify(password: password, hash: hashedPassword);
+  }
+  Future<void> resendOtp(String? jwtToken) async {
+    final response = await http.get(
+      Uri.parse('$apiUrl/verify-account'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'authorization': 'Bearer $jwtToken',
+      },
+    );
+    if (response.statusCode == 200) {
+    } else {
+      throw Exception('Failed to verify');
+    }
+  }
+  Future<bool> verifyOtp(String otp, String? jwtToken) async {
+    print('otp tai service $otp');
+    final response = await http.post(
+      Uri.parse('$apiUrl/verify-account'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'authorization': 'Bearer $jwtToken',
+      },
+      body:jsonEncode(<String, String> {
+        'otpCode': otp,
+      }
+      ),
+    );
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to verify');
+    }
+  }
+  Future<void> logout(String? token) async {
+    final response = await http.get(
+      Uri.parse('$apiUrl/logout'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'authorization': 'Bearer $token',
+      },
+      );
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw Exception('Failed to verify');
+    }
   }
 
   Future<String> hashPassword(String password) {

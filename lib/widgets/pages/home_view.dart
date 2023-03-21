@@ -3,10 +3,13 @@ import 'package:booking_app_mobile/constant/values.dart';
 import 'package:booking_app_mobile/cubit/yard_list_cubit.dart';
 import 'package:booking_app_mobile/cubit/yard_list_static_cubit.dart';
 import 'package:booking_app_mobile/models/yard_simple.dart';
+import 'package:booking_app_mobile/widgets/pages/login.dart';
 import 'package:booking_app_mobile/widgets/yard_card.dart';
 import 'package:booking_app_mobile/widgets/district_province_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../../cubit/authentication_cubit.dart';
 import '../content_title.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,29 +28,30 @@ class HomePageState extends State<HomePage> {
     //readJson();
   }
 
-  // Future<void> readJson() async {
-  //   final String response =
-  //       await rootBundle.loadString('assets/sampleYardSimple.json');
-    
-  //   final data = await json.decode(response);
-  //   setState(() {
-  //     yards = data.map((dataMap) => YardSimple.fromJson(dataMap)).toList();
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
+
     return buildHomePage();
   }
 
   Widget buildHomePage() {
+    final cubit = BlocProvider.of<AuthenticationCubit>(context);
+    Future<void> handleLogout(BuildContext context) async {
+      print("logout");
+      final storage = FlutterSecureStorage();
+      var token = await storage.read(key: JWT_STORAGE_KEY);
+      await cubit.logout(token);
+      Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text('Basketball playground'),
         actions: <Widget>[
-          IconButton(onPressed: () {
-
-          }, icon: Icon(Icons.logout))
+          IconButton(
+              onPressed: () {
+                handleLogout(context);
+              },
+              icon: Icon(Icons.logout))
         ],
       ),
       body: SingleChildScrollView(
