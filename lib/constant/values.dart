@@ -26,3 +26,8 @@ const String PROVINCE = 'PROVINCE';
 const String SUB_YARD = 'SUB_YARD';
 
 const jwtSecret = 'booking_mobile_app';
+
+const String apiServer = String.fromEnvironment(
+    'SERVER',
+    defaultValue: 'https://d2bawuzpgqlp7v.cloudfront.net/api/v1',
+);
