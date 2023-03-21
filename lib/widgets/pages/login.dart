@@ -22,7 +22,8 @@ class LoginScreen extends StatelessWidget {
       await cubit.login(email, password);
       final storage = FlutterSecureStorage();
       var isConfirm = await storage.read(key: IS_CONFIRM_STORAGE_KEY);
-
+      var token = await storage.read(key: JWT_STORAGE_KEY);
+      await cubit.resendOtp(token);
       if (isConfirm == 'true') {
         print(isConfirm);
         Navigator.pushReplacementNamed(context, MyHomePage.routeName);
@@ -158,19 +159,6 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
-              ),
-              Text.rich(
-                TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: 'Forgot password',
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.white)),
-                  ],
                 ),
               ),
             ],
