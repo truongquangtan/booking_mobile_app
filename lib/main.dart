@@ -18,14 +18,6 @@ void main() {
   runApp(const MyApp());
 }
 
-Future<void> readJson() async {
-  final String response =
-      await rootBundle.loadString('assets/sampleSlot.json');
-  
-  final data = await json.decode(response);
-  Slot slot = Slot.fromJson(data);
-}
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -34,15 +26,15 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: BlocProviders.getProviders,
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Basketball Yard Booking System',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        initialRoute: MyHomePage.routeName, // Set the initial route
+        initialRoute: LoginScreen.routeName, // Set the initial route
         routes: {
           LoginScreen.routeName: (context) => LoginScreen(),
           VerifyOtpPage.routeName: (context) => VerifyOtpPage(),
-          MyHomePage.routeName: (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
+          MyHomePage.routeName: (context) => const MyHomePage(title: 'Basketball Yard Booking System'),
         },
       ),
     );
@@ -74,8 +66,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-
-    //readJson();
   }
   @override
   Widget build(BuildContext context) {

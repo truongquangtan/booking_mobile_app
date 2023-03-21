@@ -87,13 +87,14 @@ class Service {
       Uri.parse(uri),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'authorization': authToken,
+        'authorization': 'Bearer $authToken',
       },
       body: jsonEncode(<String, dynamic>{
       'itemsPerPage': 1000,
       'page': 1,
       }),
     );
+    
     if(response.statusCode == 200){
       final data = await json.decode(response.body);
       return data['data'].map((data) => IncomingMatch.fromJson(data)).toList().cast<IncomingMatch>();
@@ -107,7 +108,7 @@ class Service {
       Uri.parse(uri),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'authorization': authToken,
+        'authorization': 'Bearer $authToken',
       },
       body: jsonEncode(<String, String>{
       'reason': "[From Mobile] I want to cancel this booking.",
@@ -132,7 +133,7 @@ class Service {
       Uri.parse(uri),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'authorization': authToken,
+        'authorization': 'Bearer $authToken',
       },
       body: requestBody,
     );

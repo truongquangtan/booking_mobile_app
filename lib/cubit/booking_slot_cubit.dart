@@ -1,9 +1,11 @@
+import 'package:booking_app_mobile/constant/values.dart';
 import 'package:booking_app_mobile/models/slot.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:booking_app_mobile/locator.dart';
 import 'package:booking_app_mobile/service/service.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class BookingSlotsCubit extends Cubit<BookingSlotsState> {
   final Service service = getIt<Service>();
@@ -36,8 +38,9 @@ class BookingSlotsCubit extends Cubit<BookingSlotsState> {
 
     emit(state.copyWith(slots: slots, error: '', isLoading: true, isJustBooked: false, targetSlot: null, isSelected: null));
 
-    const authToken = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzODMxN2ZmMy03NjI2LTQ2MWYtOGUyMy0xMGE1MjExNGY0NGEiLCJmdWxsTmFtZSI6IlRyxrDGoW5nIFF1YW5nIFTDom4iLCJlbWFpbCI6InF1YW5ndGFuOWJnbUBnbWFpbC5jb20iLCJwaG9uZSI6IjA4NDQxMTEyMjIiLCJyb2xlIjoidXNlciIsImlzQ29uZmlybWVkIjp0cnVlLCJpYXQiOjE2NzkzNTM4MTEsImV4cCI6MTY4MTA4MTgxMX0.Wp73evwjlkAlWLETNkVLCb4FY4QaTSkPub8N26Zyi5b_70IH9LfWGYVf_jpMmQtWuY8CbnTKXdHyvaDrVNzdwQ';
-    final response = await service.book(authToken, yardId, slots, date);
+    final storage = FlutterSecureStorage();
+    final authToken = await storage.read(key: JWT_STORAGE_KEY);
+    final response = await service.book(authToken!, yardId, slots, date);
 
     emit(state.copyWith(slots: slots, error: response.isSuccess ? '' : response.errorMessage , isLoading: false, isJustBooked: true, targetSlot: null, isSelected: null));
   }

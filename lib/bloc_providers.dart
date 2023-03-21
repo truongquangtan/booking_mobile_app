@@ -20,6 +20,6 @@ class BlocProviders {
         BlocProvider(create: (_) => IncomingMatchCubit()),
         BlocProvider(create: (_) => SlotsCubit()),
         BlocProvider(create: (_) => BookingSlotsCubit()),
-        BlocProvider(create: (_) => AuthenticationCubit(userService: UserService(apiUrl: apiServer, jwtSecret: 'my_secret_key'))),
+        BlocProvider(create: (_) => AuthenticationCubit(userService: UserService(apiUrl: apiServer, jwtSecret: jwtSecret))),
       ];
 }

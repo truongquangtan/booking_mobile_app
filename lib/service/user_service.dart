@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:booking_app_mobile/constant/values.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:booking_app_mobile/models/user.dart';
@@ -12,7 +13,7 @@ class UserService {
 
   UserService({required this.apiUrl, required this.jwtSecret});
 
-  Future<String> signIn(String email, String password) async {
+  Future<void> signIn(String email, String password) async {
 
     final response = await http.post(
       Uri.parse('$apiUrl/login'),
@@ -29,9 +30,8 @@ class UserService {
     if (response.statusCode == 200) {
         final data = await json.decode(response.body);
         final storage = FlutterSecureStorage();
-        await storage.write(key: 'jwt', value: data.token);
-        await storage.write(key: 'isConfirm', value: data.isConfirm);
-        return data;
+        await storage.write(key: JWT_STORAGE_KEY, value: data['token'].toString());
+        await storage.write(key: IS_CONFIRM_STORAGE_KEY, value: data['isConfirm'].toString());
     } else {
       throw Exception('Failed to sign in');
     }

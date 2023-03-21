@@ -108,7 +108,7 @@ class _LoginFormState extends State<LoginForm> {
             height: 50,
             child: ElevatedButton(
               onPressed: () {
-                widget.onSubmit(this._email, this._password, null);
+                widget.onSubmit(_email, _password, null);
               },
               style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(

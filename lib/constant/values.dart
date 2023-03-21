@@ -31,3 +31,6 @@ const String apiServer = String.fromEnvironment(
     'SERVER',
     defaultValue: 'https://d2bawuzpgqlp7v.cloudfront.net/api/v1',
 );
+
+const JWT_STORAGE_KEY = 'jwt';
+const IS_CONFIRM_STORAGE_KEY = 'isConfirm';

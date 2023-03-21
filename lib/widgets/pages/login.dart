@@ -1,3 +1,4 @@
+import 'package:booking_app_mobile/constant/values.dart';
 import 'package:booking_app_mobile/cubit/authentication_cubit.dart';
 import 'package:booking_app_mobile/main.dart';
 import 'package:booking_app_mobile/widgets/pages/verify_otp.dart';
@@ -15,9 +16,11 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<AuthenticationCubit>(context);
-    void handleLoginFormSubmit(String email, String password) {
+    Future<void> handleLoginFormSubmit(String email, String password) async {
+      print("checkin handleLoginForm");
+      await cubit.login(email, password);
       final storage = FlutterSecureStorage();
-      var isConfirm = storage.read(key: 'isConfirm');
+      var isConfirm = await storage.read(key: IS_CONFIRM_STORAGE_KEY);
 
       if (isConfirm == 'true') {
         print(isConfirm);
