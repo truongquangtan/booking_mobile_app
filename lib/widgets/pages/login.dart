@@ -1,6 +1,7 @@
 import 'package:booking_app_mobile/constant/values.dart';
 import 'package:booking_app_mobile/cubit/authentication_cubit.dart';
 import 'package:booking_app_mobile/main.dart';
+import 'package:booking_app_mobile/widgets/pages/signup.dart';
 import 'package:booking_app_mobile/widgets/pages/verify_otp.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,8 @@ class LoginScreen extends StatelessWidget {
       await cubit.login(email, password);
       final storage = FlutterSecureStorage();
       var isConfirm = await storage.read(key: IS_CONFIRM_STORAGE_KEY);
-
+      var token = await storage.read(key: JWT_STORAGE_KEY);
+      await cubit.resendOtp(token);
       if (isConfirm == 'true') {
         print(isConfirm);
         Navigator.pushReplacementNamed(context, MyHomePage.routeName);
@@ -126,7 +128,7 @@ class LoginScreen extends StatelessWidget {
                       width: size.width * 0.9,
                       child: LoginForm(
                         buttonText: "Sign in",
-                        onSubmit: (email, password, value) {
+                        onSubmit: (email, password, value, value2, value3) {
                           handleLoginFormSubmit(email, password);
                         },
                       ),
@@ -152,29 +154,15 @@ class LoginScreen extends StatelessWidget {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            _launchUrl('https://master.drp9nteguiet9.amplifyapp.com/auth/signup');
+                            Navigator.pushReplacementNamed(context, SignupScreen.routeName);
                           },
                       ),
                     ],
                   ),
                 ),
               ),
-              Text.rich(
-                TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: 'Forgot password',
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.white)),
-                  ],
-                ),
-              ),
             ],
           )
-
           // Add other widgets here, such as text or buttons
         ],
       ),

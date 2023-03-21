@@ -24,6 +24,36 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       emit(LoginFailed(error: e.toString()));
       rethrow;
     }
-    return null;
+  }
+
+  Future<bool> register(String email, String password, String confirmPassword, String fullname, String phoneNumber) async {
+    try {
+      // call the user service to check the user credentials
+      return await userService.register(email, password, confirmPassword, fullname, phoneNumber);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> verifyOtp(String otp, String? jwtToken) async {
+    try {
+      return await userService.verifyOtp(otp, jwtToken);
+    } catch(e) {
+      print('a $e');
+      rethrow;
+    }
+  }
+
+  Future<void> resendOtp(String? jwtToken) async {
+    await userService.resendOtp(jwtToken);
+  }
+
+  Future<void> logout(String? token) async {
+    try {
+      return await userService.logout(token);
+    }
+    catch (e) {
+      rethrow;
+    }
   }
 }

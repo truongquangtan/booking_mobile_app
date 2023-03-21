@@ -3,7 +3,12 @@ import 'package:booking_app_mobile/cubit/incoming_matched_cubit.dart';
 import 'package:booking_app_mobile/models/incomingMatch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import '../../constant/values.dart';
+import '../../cubit/authentication_cubit.dart';
+import 'login.dart';
 
 class ListPage extends StatefulWidget {
   const ListPage({Key? key}) : super(key: key);
@@ -42,13 +47,23 @@ class ListPageState extends State<ListPage> {
   }
 
   Scaffold buildListView() {
+    final cubit = BlocProvider.of<AuthenticationCubit>(context);
+    Future<void> handleLogout(BuildContext context) async {
+      print("logout");
+      final storage = FlutterSecureStorage();
+      var token = await storage.read(key: JWT_STORAGE_KEY);
+      await cubit.logout(token);
+      Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text('Basketball playground'),
         actions: <Widget>[
-          IconButton(onPressed: () {
-
-          }, icon: Icon(Icons.logout))
+          IconButton(
+              onPressed: () {
+                handleLogout(context);
+              },
+              icon: Icon(Icons.logout))
         ],
       ),
       body: Container(
