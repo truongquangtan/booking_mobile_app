@@ -12,7 +12,7 @@
     <data android:scheme="tel" />
   </intent>
 </queries>
-  <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+  <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="booking_app_mobile"
         android:name="${applicationName}"
