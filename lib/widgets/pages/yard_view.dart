@@ -51,6 +51,9 @@ class _YardPageState extends State<YardPage> {
       ),
       body: BlocBuilder<YardCubit, YardState>(
         builder: (context, state) {
+          final bookingCubit = BlocProvider.of<BookingSlotsCubit>(context);
+          bookingCubit.refreshSelectedSlots();
+          
           if (state is InitialYardState) {
             return const Loading();
           } else {
@@ -222,7 +225,7 @@ class _YardPageState extends State<YardPage> {
         builder: (context, state) {
       if (state.isJustBooked) {
         final bookingCubit = BlocProvider.of<BookingSlotsCubit>(context);
-        bookingCubit.removeJustBookedMark();
+        bookingCubit.refreshSelectedSlots();
         final cubit = BlocProvider.of<SlotsCubit>(context);
         cubit.getSlots(subYardId!, dateSelected!);
       }

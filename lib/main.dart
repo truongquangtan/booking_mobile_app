@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        initialRoute: LoginScreen.routeName, // Set the initial route
+        initialRoute: MyHomePage.routeName, // Set the initial route
         routes: {
           LoginScreen.routeName: (context) => LoginScreen(),
           VerifyOtpPage.routeName: (context) => VerifyOtpPage(),
@@ -89,36 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar:
           buildBottomAppBar(), // This trailing comma makes auto-formatting nicer for build methods.
     );
-  }
-
-  Center incomingScreen(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Text(
-            'Incoming screen',
-          ),
-          Text(
-            '$_counter',
-            style: Theme.of(context).textTheme.headline4,
-          ),
-          Text(
-            '$_currentIndex',
-            style: Theme.of(context).textTheme.headline4,
-          ),
-          ElevatedButton(
-              onPressed: () => showMessage(), child: Text("Click me"))
-        ],
-      ),
-    );
-  }
-
-  void showMessage() {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(
-          'Selected: ${dateInputKey.currentState?.selectedDate.value.day}'),
-    ));
   }
 
   Widget buildBottomAppBar() {

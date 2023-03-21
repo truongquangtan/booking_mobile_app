@@ -41,8 +41,7 @@ class BookingSlotsCubit extends Cubit<BookingSlotsState> {
 
     emit(state.copyWith(slots: slots, error: response.isSuccess ? '' : response.errorMessage , isLoading: false, isJustBooked: true, targetSlot: null, isSelected: null));
   }
-
-  void removeJustBookedMark() {
+  void refreshSelectedSlots() {
     emit(state.copyWith(slots: [], error: '', isLoading: false, isJustBooked: false, targetSlot: null, isSelected: null));
   }
 }

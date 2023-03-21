@@ -32,8 +32,8 @@ class SlotState extends State<SlotWidget> {
     setState(() {
       if (_backgroundColor == Colors.white) {
         cubit.selectOneMoreSlot(widget.slot);
-        _backgroundColor = Color.fromARGB(255, 20, 132, 189);
-      } else if (_backgroundColor == Color.fromARGB(255, 20, 132, 189)) {
+        _backgroundColor = Color(int.parse("0xff0000ff")).withAlpha(20);
+      } else if (_backgroundColor == Color(int.parse("0xff0000ff")).withAlpha(20)) {
         cubit.unselectedOneSlot(widget.slot);
         _backgroundColor = Colors.white;
       }
@@ -53,12 +53,18 @@ class SlotState extends State<SlotWidget> {
         builder: (context, state) {
       
       if (state.slots.indexWhere((element) => element.id == widget.slot.id) >= 0){
-        _backgroundColor = Color.fromARGB(255, 20, 132, 189);
+        _backgroundColor = Color(int.parse("0xff0000ff")).withAlpha(20);
+      } else {
+        if (widget.slot.isBooked) {
+          _backgroundColor = Color.fromARGB(255, 232, 173, 173);
+        } else {
+          _backgroundColor = Colors.white;
+        }
       }
       
       if (state.targetSlot != null && state.targetSlot!.id == widget.slot.id) {
         if (state.isSelected != null && state.isSelected! == true) {
-          _backgroundColor = Color.fromARGB(255, 20, 132, 189);
+          _backgroundColor = Color(int.parse("0xff0000ff")).withAlpha(20);
         } else if (state.isSelected != null && state.isSelected! == false) {
           _backgroundColor = Colors.white;
         }

@@ -31,7 +31,7 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
       dropdownValue = null;
     }
     return SizedBox(
-      width: 200,
+      width: 150,
       child: DropdownButton<String>(
         isExpanded: true,
         value: dropdownValue,
