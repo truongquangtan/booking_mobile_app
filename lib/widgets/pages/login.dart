@@ -114,7 +114,7 @@ class LoginScreen extends StatelessWidget {
                           text: 'Basketball Playground',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 36,
+                              fontSize: 28,
                               color: Colors.white)),
                     ],
                   ),
