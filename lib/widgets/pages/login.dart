@@ -107,16 +107,18 @@ class LoginScreen extends StatelessWidget {
               ),
               Container(
                 margin: EdgeInsets.only(top: 60, bottom: 40),
-                child: Text.rich(
-                  TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: 'Basketball Playground',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 28,
-                              color: Colors.white)),
-                    ],
+                child: Center(
+                  child: Text.rich(
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: 'Basketball Playground',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24,
+                                color: Colors.white)),
+                      ],
+                    ),
                   ),
                 ),
               ),

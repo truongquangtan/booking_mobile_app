@@ -72,7 +72,7 @@ class SignupScreen extends StatelessWidget {
                               text: 'Basketball Playground',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 28,
+                                  fontSize: 24,
                                   color: Colors.white)),
                         ],
                       ),
