@@ -50,9 +50,9 @@ class ListPageState extends State<ListPage> {
     final cubit = BlocProvider.of<AuthenticationCubit>(context);
     Future<void> handleLogout(BuildContext context) async {
       print("logout");
-      final storage = FlutterSecureStorage();
-      var token = await storage.read(key: JWT_STORAGE_KEY);
-      await cubit.logout(token);
+      //final storage = FlutterSecureStorage();
+      //var token = await storage.read(key: JWT_STORAGE_KEY);
+      await cubit.logout(JWT_TOKEN_VALUE);
       Navigator.pushReplacementNamed(context, LoginScreen.routeName);
     }
     return Scaffold(

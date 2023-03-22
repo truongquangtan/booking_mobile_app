@@ -15,10 +15,11 @@ class IncomingMatchCubit extends Cubit<IncomingMatchState> {
   void getIncomingMatches() async {
     emit(LoadingIncomingMatchesState());
 
-    final storage = FlutterSecureStorage();
-    final authToken = await storage.read(key: JWT_STORAGE_KEY);
+    //final storage = FlutterSecureStorage();
+    //final authToken = await storage.read(key: JWT_STORAGE_KEY);
+    final authToken = JWT_TOKEN_VALUE;
     
-    final incomingMatches = await service.getIncomingMatch(authToken!);
+    final incomingMatches = await service.getIncomingMatch(authToken);
 
     emit(LoadedIncomingMatchesState(incomingMatches));
   }
@@ -26,8 +27,9 @@ class IncomingMatchCubit extends Cubit<IncomingMatchState> {
   void cancelMatch(String bookingId) async {
     emit(LoadingIncomingMatchesState());
 
-    final storage = FlutterSecureStorage();
-    final authToken = await storage.read(key: JWT_STORAGE_KEY);
+    //final storage = FlutterSecureStorage();
+    //final authToken = await storage.read(key: JWT_STORAGE_KEY);
+    final authToken = JWT_TOKEN_VALUE;
 
     await service.cancelBookingMatch(authToken!, bookingId);
     final incomingMatches = await service.getIncomingMatch(authToken);

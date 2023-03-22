@@ -16,9 +16,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Future<void> login(String email, String password) async {
     try {
       // call the user service to check the user credentials
-      final storage = FlutterSecureStorage();
+      //final storage = FlutterSecureStorage();
       await userService.signIn(email, password);
-      var isConfirm = await storage.read(key: IS_CONFIRM_STORAGE_KEY);
+      //var isConfirm = await storage.read(key: IS_CONFIRM_STORAGE_KEY);
+      var isConfirm = IS_CONFIRM_VALUE; 
       emit(Authenticated(isConfirm: isConfirm == 'true'));
     } catch (e) {
       emit(LoginFailed(error: e.toString()));

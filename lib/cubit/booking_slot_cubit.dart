@@ -38,8 +38,9 @@ class BookingSlotsCubit extends Cubit<BookingSlotsState> {
 
     emit(state.copyWith(slots: slots, error: '', isLoading: true, isJustBooked: false, targetSlot: null, isSelected: null));
 
-    final storage = FlutterSecureStorage();
-    final authToken = await storage.read(key: JWT_STORAGE_KEY);
+    //final storage = FlutterSecureStorage();
+    //final authToken = await storage.read(key: JWT_STORAGE_KEY);
+    final authToken = JWT_TOKEN_VALUE;
     final response = await service.book(authToken!, yardId, slots, date);
 
     emit(state.copyWith(slots: slots, error: response.isSuccess ? '' : response.errorMessage , isLoading: false, isJustBooked: true, targetSlot: null, isSelected: null));

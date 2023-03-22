@@ -20,14 +20,15 @@ class LoginScreen extends StatelessWidget {
     Future<void> handleLoginFormSubmit(String email, String password) async {
       print("checkin handleLoginForm");
       await cubit.login(email, password);
-      final storage = FlutterSecureStorage();
-      var isConfirm = await storage.read(key: IS_CONFIRM_STORAGE_KEY);
-      var token = await storage.read(key: JWT_STORAGE_KEY);
-      await cubit.resendOtp(token);
-      if (isConfirm == 'true') {
-        print(isConfirm);
+      //final storage = FlutterSecureStorage();
+      // var isConfirm = await storage.read(key: IS_CONFIRM_STORAGE_KEY);
+      // var token = await storage.read(key: JWT_STORAGE_KEY);
+      if (IS_CONFIRM_VALUE == 'true') {
+        print(IS_CONFIRM_VALUE);
         Navigator.pushReplacementNamed(context, MyHomePage.routeName);
       } else {
+        print('sent otp');
+        await cubit.resendOtp(JWT_TOKEN_VALUE);
         Navigator.pushReplacementNamed(context, VerifyOtpPage.routeName);
       }
     }

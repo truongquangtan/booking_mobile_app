@@ -25,18 +25,18 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
     Future<void> _verifyOTP() async {
       String otp = _otpController.text;
       print(otp);
-      final storage = FlutterSecureStorage();
-      var jwtToken = await storage.read(key: JWT_STORAGE_KEY);
-      var isVerified = await cubit.verifyOtp(otp, jwtToken);
+      //final storage = FlutterSecureStorage();
+      //var jwtToken = await storage.read(key: JWT_STORAGE_KEY);
+      var isVerified = await cubit.verifyOtp(otp, JWT_TOKEN_VALUE);
       if (isVerified) {
         Navigator.pushReplacementNamed(context, MyHomePage.routeName);
       }
     }
 
     Future<void> _resendOtp() async {
-      final storage = FlutterSecureStorage();
-      var jwtToken = await storage.read(key: JWT_STORAGE_KEY);
-      await cubit.resendOtp(jwtToken);
+      //final storage = FlutterSecureStorage();
+      //var jwtToken = await storage.read(key: JWT_STORAGE_KEY);
+      await cubit.resendOtp(JWT_TOKEN_VALUE);
     }
     return Scaffold(
       appBar: AppBar(

@@ -50,9 +50,11 @@ class UserService {
 
     if (response.statusCode == 200) {
         final data = await json.decode(response.body);
-        final storage = FlutterSecureStorage();
-        await storage.write(key: JWT_STORAGE_KEY, value: data['token'].toString());
-        await storage.write(key: IS_CONFIRM_STORAGE_KEY, value: data['isConfirm'].toString());
+        //final storage = FlutterSecureStorage();
+        //await storage.write(key: JWT_STORAGE_KEY, value: data['token'].toString());
+        //await storage.write(key: IS_CONFIRM_STORAGE_KEY, value: data['isConfirm'].toString());
+        JWT_TOKEN_VALUE = data['token'].toString();
+        IS_CONFIRM_VALUE = data['isConfirm'].toString();
     } else {
       throw Exception('Failed to sign in');
     }
